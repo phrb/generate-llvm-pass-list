@@ -30,8 +30,24 @@
                     "command": "-print-modref",
                     "type": "bool"
                 },
+                "print-must": {
+                    "command": "-print-must",
+                    "type": "bool"
+                },
                 "print-must-aliases": {
                     "command": "-print-must-aliases",
+                    "type": "bool"
+                },
+                "print-mustmod": {
+                    "command": "-print-mustmod",
+                    "type": "bool"
+                },
+                "print-mustmodref": {
+                    "command": "-print-mustmodref",
+                    "type": "bool"
+                },
+                "print-mustref": {
+                    "command": "-print-mustref",
                     "type": "bool"
                 },
                 "print-no-aliases": {
@@ -98,6 +114,16 @@
             "description": "Basic Alias Analysis (stateless AA impl)",
             "name": "BasicAAWrapperPass",
             "parameters": {
+                "basicaa-double-calc-bits": {
+                    "command": "-basicaa-double-calc-bits",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "basicaa-force-at-least-64b": {
+                    "command": "-basicaa-force-at-least-64b",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
                 "basicaa-recphi": {
                     "command": "-basicaa-recphi",
                     "initial_value": "false",
@@ -125,6 +151,11 @@
             "description": "Block Frequency Analysis",
             "name": "BlockFrequencyInfoWrapperPass",
             "parameters": {
+                "print-bfi": {
+                    "command": "-print-bfi",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
                 "view-block-freq-propagation-dags": {
                     "command": "-view-block-freq-propagation-dags",
                     "type": "GVDAGType"
@@ -136,18 +167,36 @@
             "dependencies": {
                 "LoopInfoWrapperPass": {
                     "name": "LoopInfoWrapperPass"
+                },
+                "TargetLibraryInfoWrapperPass": {
+                    "name": "TargetLibraryInfoWrapperPass"
                 }
             },
             "description": "Branch Probability Analysis",
             "name": "BranchProbabilityInfoWrapperPass",
-            "parameters": {}
+            "parameters": {
+                "print-bpi": {
+                    "command": "-print-bpi",
+                    "initial_value": "false",
+                    "type": "bool"
+                }
+            }
         },
         "CFGViewerLegacyPass": {
             "command": "-view-cfg",
             "dependencies": {},
             "description": "View CFG of function",
             "name": "CFGViewerLegacyPass",
-            "parameters": {}
+            "parameters": {
+                "cfg-dot-filename-prefix": {
+                    "command": "-cfg-dot-filename-prefix",
+                    "type": "std::string"
+                },
+                "cfg-func-name": {
+                    "command": "-cfg-func-name",
+                    "type": "std::string"
+                }
+            }
         },
         "CFLAndersAAWrapperPass": {
             "command": "-cfl-anders-aa",
@@ -161,6 +210,13 @@
             "dependencies": {},
             "description": "Unification-Based CFL Alias Analysis",
             "name": "CFLSteensAAWrapperPass",
+            "parameters": {}
+        },
+        "CGSCCPassManager": {
+            "command": "-cgscc",
+            "dependencies": {},
+            "description": "",
+            "name": "CGSCCPassManager",
             "parameters": {}
         },
         "CallGraphViewer": {
@@ -194,10 +250,10 @@
             "description": "cm_name",
             "name": "CostModelAnalysis",
             "parameters": {
-                "costmodel-reduxcost": {
-                    "command": "-costmodel-reduxcost",
-                    "initial_value": "false",
-                    "type": "bool"
+                "cost-kind": {
+                    "command": "-cost-kind",
+                    "initial_value": "TargetTransformInfo::TCK_RecipThroughput",
+                    "type": "TargetTransformInfo::TargetCostKind"
                 }
             }
         },
@@ -244,22 +300,20 @@
             "parameters": {
                 "da-delinearize": {
                     "command": "-da-delinearize",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "da-disable-delinearization-checks": {
+                    "command": "-da-disable-delinearization-checks",
                     "initial_value": "false",
                     "type": "bool"
                 }
             }
         },
         "DivergenceAnalysis": {
-            "command": "-divergence",
-            "dependencies": {
-                "DominatorTreeWrapperPass": {
-                    "name": "DominatorTreeWrapperPass"
-                },
-                "PostDominatorTreeWrapperPass": {
-                    "name": "PostDominatorTreeWrapperPass"
-                }
-            },
-            "description": "Divergence Analysis",
+            "command": "-divergence-analysis",
+            "dependencies": {},
+            "description": "",
             "name": "DivergenceAnalysis",
             "parameters": {}
         },
@@ -355,6 +409,13 @@
                 }
             }
         },
+        "IVDescriptors": {
+            "command": "-iv-descriptors",
+            "dependencies": {},
+            "description": "",
+            "name": "IVDescriptors",
+            "parameters": {}
+        },
         "IVUsersWrapperPass": {
             "command": "-iv-users",
             "dependencies": {
@@ -381,19 +442,19 @@
             "description": "",
             "name": "IndirectCallPromotionAnalysis",
             "parameters": {
-                "icp-count-threshold": {
-                    "command": "-icp-count-threshold",
-                    "initial_value": "1000",
-                    "type": "unsigned"
-                },
                 "icp-max-prom": {
                     "command": "-icp-max-prom",
-                    "initial_value": "2",
+                    "initial_value": "3",
                     "type": "unsigned"
                 },
-                "icp-percent-threshold": {
-                    "command": "-icp-percent-threshold",
-                    "initial_value": "33",
+                "icp-remaining-percent-threshold": {
+                    "command": "-icp-remaining-percent-threshold",
+                    "initial_value": "30",
+                    "type": "unsigned"
+                },
+                "icp-total-percent-threshold": {
+                    "command": "-icp-total-percent-threshold",
+                    "initial_value": "5",
                     "type": "unsigned"
                 }
             }
@@ -404,6 +465,16 @@
             "description": "",
             "name": "InlineCost",
             "parameters": {
+                "cold-callsite-rel-freq": {
+                    "command": "-cold-callsite-rel-freq",
+                    "initial_value": "2",
+                    "type": "int"
+                },
+                "hot-callsite-rel-freq": {
+                    "command": "-hot-callsite-rel-freq",
+                    "initial_value": "60",
+                    "type": "int"
+                },
                 "hot-callsite-threshold": {
                     "command": "-hot-callsite-threshold",
                     "initial_value": "3000",
@@ -414,6 +485,11 @@
                     "initial_value": "45",
                     "type": "int"
                 },
+                "inline-cost-full": {
+                    "command": "-inline-cost-full",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
                 "inline-threshold": {
                     "command": "-inline-threshold",
                     "initial_value": "225",
@@ -421,12 +497,17 @@
                 },
                 "inlinecold-threshold": {
                     "command": "-inlinecold-threshold",
-                    "initial_value": "225",
+                    "initial_value": "45",
                     "type": "int"
                 },
                 "inlinehint-threshold": {
                     "command": "-inlinehint-threshold",
                     "initial_value": "325",
+                    "type": "int"
+                },
+                "locally-hot-callsite-threshold": {
+                    "command": "-locally-hot-callsite-threshold",
+                    "initial_value": "525",
                     "type": "int"
                 }
             }
@@ -484,6 +565,9 @@
                 },
                 "LoopInfoWrapperPass": {
                     "name": "LoopInfoWrapperPass"
+                },
+                "TargetLibraryInfoWrapperPass": {
+                    "name": "TargetLibraryInfoWrapperPass"
                 }
             },
             "description": "Lazy Branch Probability Analysis",
@@ -513,6 +597,29 @@
             "description": "Lazy Value Information Analysis",
             "name": "LazyValueInfoWrapperPass",
             "parameters": {}
+        },
+        "LegacyDivergenceAnalysis": {
+            "command": "-divergence",
+            "dependencies": {
+                "DominatorTreeWrapperPass": {
+                    "name": "DominatorTreeWrapperPass"
+                },
+                "LoopInfoWrapperPass": {
+                    "name": "LoopInfoWrapperPass"
+                },
+                "PostDominatorTreeWrapperPass": {
+                    "name": "PostDominatorTreeWrapperPass"
+                }
+            },
+            "description": "Legacy Divergence Analysis",
+            "name": "LegacyDivergenceAnalysis",
+            "parameters": {
+                "use-gpu-divergence-analysis": {
+                    "command": "-use-gpu-divergence-analysis",
+                    "initial_value": "false",
+                    "type": "bool"
+                }
+            }
         },
         "Lint": {
             "command": "-lint",
@@ -588,6 +695,24 @@
                 }
             }
         },
+        "LoopCacheAnalysis": {
+            "command": "-loop-cache-cost",
+            "dependencies": {},
+            "description": "",
+            "name": "LoopCacheAnalysis",
+            "parameters": {
+                "default-trip-count": {
+                    "command": "-default-trip-count",
+                    "initial_value": "100",
+                    "type": "unsigned"
+                },
+                "temporal-reuse-threshold": {
+                    "command": "-temporal-reuse-threshold",
+                    "initial_value": "2",
+                    "type": "unsigned"
+                }
+            }
+        },
         "LoopInfoWrapperPass": {
             "command": "-loops",
             "dependencies": {
@@ -600,7 +725,7 @@
             "parameters": {
                 "verify-loop-info": {
                     "command": "-verify-loop-info",
-                    "type": "bool,true"
+                    "type": "bool, true"
                 }
             }
         },
@@ -641,6 +766,9 @@
                 "DominatorTreeWrapperPass": {
                     "name": "DominatorTreeWrapperPass"
                 },
+                "PhiValuesWrapperPass": {
+                    "name": "PhiValuesWrapperPass"
+                },
                 "TargetLibraryInfoWrapperPass": {
                     "name": "TargetLibraryInfoWrapperPass"
                 }
@@ -657,6 +785,40 @@
                     "command": "-memdep-block-scan-limit",
                     "initial_value": "100",
                     "type": "unsigned"
+                }
+            }
+        },
+        "MemorySSAUpdater": {
+            "command": "-memoryssa",
+            "dependencies": {},
+            "description": "",
+            "name": "MemorySSAUpdater",
+            "parameters": {}
+        },
+        "MemorySSAWrapperPass": {
+            "command": "-memoryssa",
+            "dependencies": {
+                "AAResultsWrapperPass": {
+                    "name": "AAResultsWrapperPass"
+                },
+                "DominatorTreeWrapperPass": {
+                    "name": "DominatorTreeWrapperPass"
+                },
+                "MemorySSAWrapperPass": {
+                    "name": "MemorySSAWrapperPass"
+                }
+            },
+            "description": "Memory SSA",
+            "name": "MemorySSAWrapperPass",
+            "parameters": {
+                "memssa-check-limit": {
+                    "command": "-memssa-check-limit",
+                    "initial_value": "100",
+                    "type": "unsigned"
+                },
+                "verify-memoryssa": {
+                    "command": "-verify-memoryssa",
+                    "type": "bool, true"
                 }
             }
         },
@@ -681,6 +843,23 @@
             "name": "ModuleSummaryIndexWrapperPass",
             "parameters": {}
         },
+        "MustExecutePrinter": {
+            "command": "-print-mustexecute",
+            "dependencies": {
+                "DominatorTreeWrapperPass": {
+                    "name": "DominatorTreeWrapperPass"
+                },
+                "LoopInfoWrapperPass": {
+                    "name": "LoopInfoWrapperPass"
+                },
+                "PostDominatorTreeWrapperPass": {
+                    "name": "PostDominatorTreeWrapperPass"
+                }
+            },
+            "description": "Instructions which execute on loop entry",
+            "name": "MustExecutePrinter",
+            "parameters": {}
+        },
         "ObjCARCAAWrapperPass": {
             "command": "-objc-arc-aa",
             "dependencies": {},
@@ -699,6 +878,13 @@
             "name": "OptimizationRemarkEmitterWrapperPass",
             "parameters": {}
         },
+        "PhiValuesWrapperPass": {
+            "command": "-phi-values",
+            "dependencies": {},
+            "description": "Phi Values Analysis",
+            "name": "PhiValuesWrapperPass",
+            "parameters": {}
+        },
         "PostDominatorTreeWrapperPass": {
             "command": "-postdomtree",
             "dependencies": {},
@@ -712,6 +898,10 @@
             "description": "Profile summary info",
             "name": "ProfileSummaryInfoWrapperPass",
             "parameters": {
+                "profile-summary-cold-count": {
+                    "command": "-profile-summary-cold-count",
+                    "type": "int"
+                },
                 "profile-summary-cutoff-cold": {
                     "command": "-profile-summary-cutoff-cold",
                     "initial_value": "999999",
@@ -719,8 +909,17 @@
                 },
                 "profile-summary-cutoff-hot": {
                     "command": "-profile-summary-cutoff-hot",
-                    "initial_value": "999000",
+                    "initial_value": "990000",
                     "type": "int"
+                },
+                "profile-summary-hot-count": {
+                    "command": "-profile-summary-hot-count",
+                    "type": "int"
+                },
+                "profile-summary-huge-working-set-size-threshold": {
+                    "command": "-profile-summary-huge-working-set-size-threshold",
+                    "initial_value": "15000",
+                    "type": "unsigned"
                 }
             }
         },
@@ -800,9 +999,24 @@
             "description": "Scalar Evolution Analysis",
             "name": "ScalarEvolutionWrapperPass",
             "parameters": {
-                "scalar-evolution-max-addexpr-depth": {
-                    "command": "-scalar-evolution-max-addexpr-depth",
+                "scalar-evolution-huge-expr-threshold": {
+                    "command": "-scalar-evolution-huge-expr-threshold",
+                    "initial_value": "4096",
+                    "type": "unsigned"
+                },
+                "scalar-evolution-max-add-rec-size": {
+                    "command": "-scalar-evolution-max-add-rec-size",
+                    "initial_value": "8",
+                    "type": "unsigned"
+                },
+                "scalar-evolution-max-arith-depth": {
+                    "command": "-scalar-evolution-max-arith-depth",
                     "initial_value": "32",
+                    "type": "unsigned"
+                },
+                "scalar-evolution-max-cast-depth": {
+                    "command": "-scalar-evolution-max-cast-depth",
+                    "initial_value": "8",
                     "type": "unsigned"
                 },
                 "scalar-evolution-max-constant-evolving-depth": {
@@ -837,8 +1051,13 @@
                 },
                 "scev-mulops-inline-threshold": {
                     "command": "-scev-mulops-inline-threshold",
-                    "initial_value": "1000",
+                    "initial_value": "32",
                     "type": "unsigned"
+                },
+                "scev-verify-ir": {
+                    "command": "-scev-verify-ir",
+                    "initial_value": "false",
+                    "type": "bool"
                 },
                 "verify-scev": {
                     "command": "-verify-scev",
@@ -863,11 +1082,31 @@
                 }
             }
         },
-        "SparsePropagation": {
-            "command": "-sparseprop",
+        "StackSafetyInfoWrapperPass": {
+            "command": "-LocalPassArg",
+            "dependencies": {
+                "ScalarEvolutionWrapperPass": {
+                    "name": "ScalarEvolutionWrapperPass"
+                },
+                "StackSafetyInfoWrapperPass": {
+                    "name": "StackSafetyInfoWrapperPass"
+                }
+            },
+            "description": "LocalPassName",
+            "name": "StackSafetyInfoWrapperPass",
+            "parameters": {
+                "stack-safety-max-iterations": {
+                    "command": "-stack-safety-max-iterations",
+                    "initial_value": "20",
+                    "type": "int"
+                }
+            }
+        },
+        "SyncDependenceAnalysis": {
+            "command": "-sync-dependence",
             "dependencies": {},
             "description": "",
-            "name": "SparsePropagation",
+            "name": "SyncDependenceAnalysis",
             "parameters": {}
         },
         "TargetLibraryInfoWrapperPass": {
@@ -888,7 +1127,13 @@
             "dependencies": {},
             "description": "Target Transform Information",
             "name": "TargetTransformInfoWrapperPass",
-            "parameters": {}
+            "parameters": {
+                "costmodel-reduxcost": {
+                    "command": "-costmodel-reduxcost",
+                    "initial_value": "false",
+                    "type": "bool"
+                }
+            }
         },
         "TypeBasedAAWrapperPass": {
             "command": "-tbaa",
@@ -900,6 +1145,19 @@
                     "command": "-enable-tbaa",
                     "initial_value": "true",
                     "type": "bool"
+                }
+            }
+        },
+        "VectorUtils": {
+            "command": "-vectorutils",
+            "dependencies": {},
+            "description": "",
+            "name": "VectorUtils",
+            "parameters": {
+                "max-interleave-group-factor": {
+                    "command": "-max-interleave-group-factor",
+                    "initial_value": "8",
+                    "type": "unsigned"
                 }
             }
         },
@@ -928,31 +1186,18 @@
                 }
             }
         },
-        "AddDiscriminatorsLegacyPass": {
-            "command": "-add-discriminators",
-            "dependencies": {},
-            "description": "Add DWARF path discriminators",
-            "name": "AddDiscriminatorsLegacyPass",
-            "parameters": {
-                "no-discriminators": {
-                    "command": "-no-discriminators",
-                    "initial_value": "false",
-                    "type": "bool"
-                }
-            }
-        },
-        "AddressSanitizer": {
-            "command": "-asan",
+        "ASanGlobalsMetadataWrapperPass": {
+            "command": "-asan-globals-md",
             "dependencies": {
-                "DominatorTreeWrapperPass": {
-                    "name": "DominatorTreeWrapperPass"
+                "ASanGlobalsMetadataWrapperPass": {
+                    "name": "ASanGlobalsMetadataWrapperPass"
                 },
                 "TargetLibraryInfoWrapperPass": {
                     "name": "TargetLibraryInfoWrapperPass"
                 }
             },
-            "description": "AddressSanitizer: detects use-after-free and out-of-bounds bugs.",
-            "name": "AddressSanitizer",
+            "description": "Read metadata to mark which globals should be instrumented \"\n                \"when running ASan.",
+            "name": "ASanGlobalsMetadataWrapperPass",
             "parameters": {
                 "asan-always-slow-path": {
                     "command": "-asan-always-slow-path",
@@ -983,8 +1228,18 @@
                     "initial_value": "0",
                     "type": "int"
                 },
+                "asan-detect-invalid-pointer-cmp": {
+                    "command": "-asan-detect-invalid-pointer-cmp",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
                 "asan-detect-invalid-pointer-pair": {
                     "command": "-asan-detect-invalid-pointer-pair",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "asan-detect-invalid-pointer-sub": {
+                    "command": "-asan-detect-invalid-pointer-sub",
                     "initial_value": "false",
                     "type": "bool"
                 },
@@ -1046,7 +1301,7 @@
                 "asan-mapping-offset": {
                     "command": "-asan-mapping-offset",
                     "initial_value": "0",
-                    "type": "unsigned long long"
+                    "type": "uint64_t"
                 },
                 "asan-mapping-scale": {
                     "command": "-asan-mapping-scale",
@@ -1098,6 +1353,11 @@
                     "initial_value": "false",
                     "type": "bool"
                 },
+                "asan-redzone-byval-args": {
+                    "command": "-asan-redzone-byval-args",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
                 "asan-skip-promotable-allocas": {
                     "command": "-asan-skip-promotable-allocas",
                     "initial_value": "true",
@@ -1123,12 +1383,59 @@
                     "initial_value": "false",
                     "type": "bool"
                 },
+                "asan-use-odr-indicator": {
+                    "command": "-asan-use-odr-indicator",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
                 "asan-use-private-alias": {
                     "command": "-asan-use-private-alias",
                     "initial_value": "false",
                     "type": "bool"
+                },
+                "asan-with-comdat": {
+                    "command": "-asan-with-comdat",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "asan-with-ifunc": {
+                    "command": "-asan-with-ifunc",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "asan-with-ifunc-suppress-remat": {
+                    "command": "-asan-with-ifunc-suppress-remat",
+                    "initial_value": "true",
+                    "type": "bool"
                 }
             }
+        },
+        "AddDiscriminatorsLegacyPass": {
+            "command": "-add-discriminators",
+            "dependencies": {},
+            "description": "Add DWARF path discriminators",
+            "name": "AddDiscriminatorsLegacyPass",
+            "parameters": {
+                "no-discriminators": {
+                    "command": "-no-discriminators",
+                    "initial_value": "false",
+                    "type": "bool"
+                }
+            }
+        },
+        "AggressiveInstCombinerLegacyPass": {
+            "command": "-aggressive-instcombine",
+            "dependencies": {
+                "DominatorTreeWrapperPass": {
+                    "name": "DominatorTreeWrapperPass"
+                },
+                "TargetLibraryInfoWrapperPass": {
+                    "name": "TargetLibraryInfoWrapperPass"
+                }
+            },
+            "description": "Combine pattern based expressions",
+            "name": "AggressiveInstCombinerLegacyPass",
+            "parameters": {}
         },
         "AlignmentFromAssumptions": {
             "command": "-AA_NAME",
@@ -1178,194 +1485,40 @@
                 },
                 "TargetLibraryInfoWrapperPass": {
                     "name": "TargetLibraryInfoWrapperPass"
+                },
+                "TargetTransformInfoWrapperPass": {
+                    "name": "TargetTransformInfoWrapperPass"
                 }
             },
             "description": "Promote 'by reference' arguments to scalars",
             "name": "ArgPromotion",
             "parameters": {}
         },
-        "BBVectorize": {
-            "command": "-BBV_NAME",
-            "dependencies": {
-                "AAResultsWrapperPass": {
-                    "name": "AAResultsWrapperPass"
-                },
-                "DominatorTreeWrapperPass": {
-                    "name": "DominatorTreeWrapperPass"
-                },
-                "GlobalsAAWrapperPass": {
-                    "name": "GlobalsAAWrapperPass"
-                },
-                "SCEVAAWrapperPass": {
-                    "name": "SCEVAAWrapperPass"
-                },
-                "ScalarEvolutionWrapperPass": {
-                    "name": "ScalarEvolutionWrapperPass"
-                },
-                "TargetLibraryInfoWrapperPass": {
-                    "name": "TargetLibraryInfoWrapperPass"
-                },
-                "TargetTransformInfoWrapperPass": {
-                    "name": "TargetTransformInfoWrapperPass"
-                }
-            },
-            "description": "bb_vectorize_name",
-            "name": "BBVectorize",
+        "AttributorLegacyPass": {
+            "command": "-attributor",
+            "dependencies": {},
+            "description": "Deduce and propagate attributes",
+            "name": "AttributorLegacyPass",
             "parameters": {
-                "bb-vectorize-aligned-only": {
-                    "command": "-bb-vectorize-aligned-only",
-                    "initial_value": "false",
+                "attributor-disable": {
+                    "command": "-attributor-disable",
+                    "initial_value": "true",
                     "type": "bool"
                 },
-                "bb-vectorize-debug-candidate-selection": {
-                    "command": "-bb-vectorize-debug-candidate-selection",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "bb-vectorize-debug-cycle-check": {
-                    "command": "-bb-vectorize-debug-cycle-check",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "bb-vectorize-debug-instruction-examination": {
-                    "command": "-bb-vectorize-debug-instruction-examination",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "bb-vectorize-debug-pair-selection": {
-                    "command": "-bb-vectorize-debug-pair-selection",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "bb-vectorize-debug-print-after-every-pair": {
-                    "command": "-bb-vectorize-debug-print-after-every-pair",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "bb-vectorize-fast-dep": {
-                    "command": "-bb-vectorize-fast-dep",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "bb-vectorize-ignore-target-info": {
-                    "command": "-bb-vectorize-ignore-target-info",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "bb-vectorize-max-cycle-check-pairs": {
-                    "command": "-bb-vectorize-max-cycle-check-pairs",
-                    "initial_value": "200",
+                "attributor-max-iterations": {
+                    "command": "-attributor-max-iterations",
+                    "initial_value": "32",
                     "type": "unsigned"
                 },
-                "bb-vectorize-max-instr-per-group": {
-                    "command": "-bb-vectorize-max-instr-per-group",
-                    "initial_value": "500",
-                    "type": "unsigned"
-                },
-                "bb-vectorize-max-iter": {
-                    "command": "-bb-vectorize-max-iter",
-                    "initial_value": "0",
-                    "type": "unsigned"
-                },
-                "bb-vectorize-max-pairs-per-group": {
-                    "command": "-bb-vectorize-max-pairs-per-group",
-                    "initial_value": "3000",
-                    "type": "unsigned"
-                },
-                "bb-vectorize-no-bitmanip": {
-                    "command": "-bb-vectorize-no-bitmanip",
+                "attributor-max-iterations-verify": {
+                    "command": "-attributor-max-iterations-verify",
                     "initial_value": "false",
                     "type": "bool"
                 },
-                "bb-vectorize-no-bools": {
-                    "command": "-bb-vectorize-no-bools",
+                "attributor-verify": {
+                    "command": "-attributor-verify",
                     "initial_value": "false",
                     "type": "bool"
-                },
-                "bb-vectorize-no-casts": {
-                    "command": "-bb-vectorize-no-casts",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "bb-vectorize-no-cmp": {
-                    "command": "-bb-vectorize-no-cmp",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "bb-vectorize-no-floats": {
-                    "command": "-bb-vectorize-no-floats",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "bb-vectorize-no-fma": {
-                    "command": "-bb-vectorize-no-fma",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "bb-vectorize-no-gep": {
-                    "command": "-bb-vectorize-no-gep",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "bb-vectorize-no-ints": {
-                    "command": "-bb-vectorize-no-ints",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "bb-vectorize-no-math": {
-                    "command": "-bb-vectorize-no-math",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "bb-vectorize-no-mem-op-boost": {
-                    "command": "-bb-vectorize-no-mem-op-boost",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "bb-vectorize-no-mem-ops": {
-                    "command": "-bb-vectorize-no-mem-ops",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "bb-vectorize-no-pointers": {
-                    "command": "-bb-vectorize-no-pointers",
-                    "initial_value": "/*false*/ true",
-                    "type": "bool"
-                },
-                "bb-vectorize-no-select": {
-                    "command": "-bb-vectorize-no-select",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "bb-vectorize-pow2-len-only": {
-                    "command": "-bb-vectorize-pow2-len-only",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "bb-vectorize-req-chain-depth": {
-                    "command": "-bb-vectorize-req-chain-depth",
-                    "initial_value": "6",
-                    "type": "unsigned"
-                },
-                "bb-vectorize-search-limit": {
-                    "command": "-bb-vectorize-search-limit",
-                    "initial_value": "400",
-                    "type": "unsigned"
-                },
-                "bb-vectorize-splat-breaks-chain": {
-                    "command": "-bb-vectorize-splat-breaks-chain",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "bb-vectorize-use-chain-depth": {
-                    "command": "-bb-vectorize-use-chain-depth",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "bb-vectorize-vector-bits": {
-                    "command": "-bb-vectorize-vector-bits",
-                    "initial_value": "128",
-                    "type": "unsigned"
                 }
             }
         },
@@ -1387,11 +1540,34 @@
             "name": "BarrierNoop",
             "parameters": {}
         },
-        "BoundsChecking": {
-            "command": "-bounds-checking",
+        "BasicBlockUtils": {
+            "command": "-basicblock-utils",
             "dependencies": {},
+            "description": "",
+            "name": "BasicBlockUtils",
+            "parameters": {}
+        },
+        "BlockExtractor": {
+            "command": "-extract-blocks",
+            "dependencies": {},
+            "description": "Extract basic blocks from module",
+            "name": "BlockExtractor",
+            "parameters": {
+                "extract-blocks-file": {
+                    "command": "-extract-blocks-file",
+                    "type": "std::string"
+                }
+            }
+        },
+        "BoundsCheckingLegacyPass": {
+            "command": "-bounds-checking",
+            "dependencies": {
+                "TargetLibraryInfoWrapperPass": {
+                    "name": "TargetLibraryInfoWrapperPass"
+                }
+            },
             "description": "Run-time bounds checking",
-            "name": "BoundsChecking",
+            "name": "BoundsCheckingLegacyPass",
             "parameters": {
                 "bounds-checking-single-trap": {
                     "command": "-bounds-checking-single-trap",
@@ -1437,8 +1613,78 @@
                     "command": "-bonus-inst-threshold",
                     "initial_value": "1",
                     "type": "unsigned"
+                },
+                "forward-switch-cond": {
+                    "command": "-forward-switch-cond",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "keep-loops": {
+                    "command": "-keep-loops",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "sink-common-insts": {
+                    "command": "-sink-common-insts",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "switch-to-lookup": {
+                    "command": "-switch-to-lookup",
+                    "initial_value": "false",
+                    "type": "bool"
                 }
             }
+        },
+        "CallPromotionUtils": {
+            "command": "-call-promotion-utils",
+            "dependencies": {},
+            "description": "",
+            "name": "CallPromotionUtils",
+            "parameters": {}
+        },
+        "CallSiteSplittingLegacyPass": {
+            "command": "-callsite-splitting",
+            "dependencies": {
+                "DominatorTreeWrapperPass": {
+                    "name": "DominatorTreeWrapperPass"
+                },
+                "TargetLibraryInfoWrapperPass": {
+                    "name": "TargetLibraryInfoWrapperPass"
+                },
+                "TargetTransformInfoWrapperPass": {
+                    "name": "TargetTransformInfoWrapperPass"
+                }
+            },
+            "description": "Call-site splitting",
+            "name": "CallSiteSplittingLegacyPass",
+            "parameters": {
+                "callsite-splitting-duplication-threshold": {
+                    "command": "-callsite-splitting-duplication-threshold",
+                    "initial_value": "5",
+                    "type": "unsigned"
+                }
+            }
+        },
+        "CalledValuePropagationLegacyPass": {
+            "command": "-called-value-propagation",
+            "dependencies": {},
+            "description": "Called Value Propagation",
+            "name": "CalledValuePropagationLegacyPass",
+            "parameters": {
+                "cvp-max-functions-per-value": {
+                    "command": "-cvp-max-functions-per-value",
+                    "initial_value": "4",
+                    "type": "unsigned"
+                }
+            }
+        },
+        "CanonicalizeAliasesLegacyPass": {
+            "command": "-canonicalize-aliases",
+            "dependencies": {},
+            "description": "Canonicalize aliases",
+            "name": "CanonicalizeAliasesLegacyPass",
+            "parameters": {}
         },
         "CodeExtractor": {
             "command": "-code-extractor",
@@ -1455,8 +1701,14 @@
         "ConstantHoistingLegacyPass": {
             "command": "-consthoist",
             "dependencies": {
+                "BlockFrequencyInfoWrapperPass": {
+                    "name": "BlockFrequencyInfoWrapperPass"
+                },
                 "DominatorTreeWrapperPass": {
                     "name": "DominatorTreeWrapperPass"
+                },
+                "ProfileSummaryInfoWrapperPass": {
+                    "name": "ProfileSummaryInfoWrapperPass"
                 },
                 "TargetTransformInfoWrapperPass": {
                     "name": "TargetTransformInfoWrapperPass"
@@ -1464,7 +1716,23 @@
             },
             "description": "Constant Hoisting",
             "name": "ConstantHoistingLegacyPass",
-            "parameters": {}
+            "parameters": {
+                "consthoist-gep": {
+                    "command": "-consthoist-gep",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "consthoist-min-num-to-rebase": {
+                    "command": "-consthoist-min-num-to-rebase",
+                    "initial_value": "0",
+                    "type": "unsigned"
+                },
+                "consthoist-with-block-frequency": {
+                    "command": "-consthoist-with-block-frequency",
+                    "initial_value": "true",
+                    "type": "bool"
+                }
+            }
         },
         "ConstantMergeLegacyPass": {
             "command": "-constmerge",
@@ -1483,6 +1751,52 @@
             "description": "Simple constant propagation",
             "name": "ConstantPropagation",
             "parameters": {}
+        },
+        "ControlHeightReductionLegacyPass": {
+            "command": "-chr",
+            "dependencies": {
+                "BlockFrequencyInfoWrapperPass": {
+                    "name": "BlockFrequencyInfoWrapperPass"
+                },
+                "DominatorTreeWrapperPass": {
+                    "name": "DominatorTreeWrapperPass"
+                },
+                "ProfileSummaryInfoWrapperPass": {
+                    "name": "ProfileSummaryInfoWrapperPass"
+                },
+                "RegionInfoPass": {
+                    "name": "RegionInfoPass"
+                }
+            },
+            "description": "Reduce control height in the hot paths",
+            "name": "ControlHeightReductionLegacyPass",
+            "parameters": {
+                "chr-bias-threshold": {
+                    "command": "-chr-bias-threshold",
+                    "initial_value": "0.99",
+                    "type": "double"
+                },
+                "chr-function-list": {
+                    "command": "-chr-function-list",
+                    "initial_value": "\"\"",
+                    "type": "std::string"
+                },
+                "chr-merge-threshold": {
+                    "command": "-chr-merge-threshold",
+                    "initial_value": "2",
+                    "type": "unsigned"
+                },
+                "chr-module-list": {
+                    "command": "-chr-module-list",
+                    "initial_value": "\"\"",
+                    "type": "std::string"
+                },
+                "force-chr": {
+                    "command": "-force-chr",
+                    "initial_value": "false",
+                    "type": "bool"
+                }
+            }
         },
         "CoroCleanup": {
             "command": "-coro-cleanup",
@@ -1518,7 +1832,11 @@
         },
         "CoroSplit": {
             "command": "-coro-split",
-            "dependencies": {},
+            "dependencies": {
+                "CallGraphWrapperPass": {
+                    "name": "CallGraphWrapperPass"
+                }
+            },
             "description": "Split coroutine into a set of functions driving its state machine",
             "name": "CoroSplit",
             "parameters": {}
@@ -1526,6 +1844,9 @@
         "CorrelatedValuePropagation": {
             "command": "-correlated-propagation",
             "dependencies": {
+                "DominatorTreeWrapperPass": {
+                    "name": "DominatorTreeWrapperPass"
+                },
                 "LazyValueInfoWrapperPass": {
                     "name": "LazyValueInfoWrapperPass"
                 }
@@ -1533,9 +1854,9 @@
             "description": "Value Propagation",
             "name": "CorrelatedValuePropagation",
             "parameters": {
-                "cvp-dont-process-adds": {
-                    "command": "-cvp-dont-process-adds",
-                    "initial_value": "true",
+                "cvp-dont-add-nowrap-flags": {
+                    "command": "-cvp-dont-add-nowrap-flags",
+                    "initial_value": "false",
                     "type": "bool"
                 }
             }
@@ -1587,6 +1908,11 @@
                     "command": "-enable-dse-partial-overwrite-tracking",
                     "initial_value": "true",
                     "type": "bool"
+                },
+                "enable-dse-partial-store-merging": {
+                    "command": "-enable-dse-partial-store-merging",
+                    "initial_value": "true",
+                    "type": "bool"
                 }
             }
         },
@@ -1635,6 +1961,17 @@
             "name": "DependencyAnalysis",
             "parameters": {}
         },
+        "DivRemPairsLegacyPass": {
+            "command": "-div-rem-pairs",
+            "dependencies": {
+                "DominatorTreeWrapperPass": {
+                    "name": "DominatorTreeWrapperPass"
+                }
+            },
+            "description": "Hoist/decompose integer division and remainder",
+            "name": "DivRemPairsLegacyPass",
+            "parameters": {}
+        },
         "EarlyCSELegacyPass": {
             "command": "-early-cse",
             "dependencies": {
@@ -1656,52 +1993,16 @@
             },
             "description": "Early CSE",
             "name": "EarlyCSELegacyPass",
-            "parameters": {}
-        },
-        "EfficiencySanitizer": {
-            "command": "-esan",
-            "dependencies": {
-                "TargetLibraryInfoWrapperPass": {
-                    "name": "TargetLibraryInfoWrapperPass"
-                }
-            },
-            "description": "EfficiencySanitizer: finds performance issues.",
-            "name": "EfficiencySanitizer",
             "parameters": {
-                "esan-assume-intra-cache-line": {
-                    "command": "-esan-assume-intra-cache-line",
-                    "initial_value": "true",
-                    "type": "bool"
-                },
-                "esan-aux-field-info": {
-                    "command": "-esan-aux-field-info",
-                    "initial_value": "true",
-                    "type": "bool"
-                },
-                "esan-cache-frag": {
-                    "command": "-esan-cache-frag",
+                "earlycse-debug-hash": {
+                    "command": "-earlycse-debug-hash",
                     "initial_value": "false",
                     "type": "bool"
                 },
-                "esan-instrument-fastpath": {
-                    "command": "-esan-instrument-fastpath",
-                    "initial_value": "true",
-                    "type": "bool"
-                },
-                "esan-instrument-loads-and-stores": {
-                    "command": "-esan-instrument-loads-and-stores",
-                    "initial_value": "true",
-                    "type": "bool"
-                },
-                "esan-instrument-memintrinsics": {
-                    "command": "-esan-instrument-memintrinsics",
-                    "initial_value": "true",
-                    "type": "bool"
-                },
-                "esan-working-set": {
-                    "command": "-esan-working-set",
-                    "initial_value": "false",
-                    "type": "bool"
+                "earlycse-mssa-optimization-cap": {
+                    "command": "-earlycse-mssa-optimization-cap",
+                    "initial_value": "500",
+                    "type": "unsigned"
                 }
             }
         },
@@ -1710,6 +2011,13 @@
             "dependencies": {},
             "description": "Eliminate Available Externally Globals",
             "name": "EliminateAvailableExternallyLegacyPass",
+            "parameters": {}
+        },
+        "EntryExitInstrumenter": {
+            "command": "-ee-instrument",
+            "dependencies": {},
+            "description": "Instrument function entry/exit with calls to e.g. mcount()",
+            "name": "EntryExitInstrumenter",
             "parameters": {}
         },
         "Evaluator": {
@@ -1780,10 +2088,24 @@
                     "initial_value": "\n#if !defined(NDEBUG",
                     "type": "bool"
                 },
+                "import-all-index": {
+                    "command": "-import-all-index",
+                    "type": "bool"
+                },
                 "import-cold-multiplier": {
                     "command": "-import-cold-multiplier",
                     "initial_value": "0",
                     "type": "float"
+                },
+                "import-critical-multiplier": {
+                    "command": "-import-critical-multiplier",
+                    "initial_value": "100.0",
+                    "type": "float"
+                },
+                "import-cutoff": {
+                    "command": "-import-cutoff",
+                    "initial_value": "-1",
+                    "type": "int"
                 },
                 "import-hot-evolution-factor": {
                     "command": "-import-hot-evolution-factor",
@@ -1792,7 +2114,7 @@
                 },
                 "import-hot-multiplier": {
                     "command": "-import-hot-multiplier",
-                    "initial_value": "3.0",
+                    "initial_value": "10.0",
                     "type": "float"
                 },
                 "import-instr-evolution-factor": {
@@ -1804,6 +2126,11 @@
                     "command": "-import-instr-limit",
                     "initial_value": "100",
                     "type": "unsigned"
+                },
+                "print-import-failures": {
+                    "command": "-print-import-failures",
+                    "initial_value": "false",
+                    "type": "bool"
                 },
                 "print-imports": {
                     "command": "-print-imports",
@@ -1818,7 +2145,11 @@
         },
         "GCOVProfilerLegacyPass": {
             "command": "-insert-gcov-profiling",
-            "dependencies": {},
+            "dependencies": {
+                "TargetLibraryInfoWrapperPass": {
+                    "name": "TargetLibraryInfoWrapperPass"
+                }
+            },
             "description": "Insert instrumentation for GCOV profiling",
             "name": "GCOVProfilerLegacyPass",
             "parameters": {
@@ -1848,6 +2179,9 @@
                 },
                 "MemorySSAWrapperPass": {
                     "name": "MemorySSAWrapperPass"
+                },
+                "PostDominatorTreeWrapperPass": {
+                    "name": "PostDominatorTreeWrapperPass"
                 }
             },
             "description": "Early GVN Hoisting of Expressions",
@@ -1903,6 +2237,11 @@
             "description": "Global Value Numbering",
             "name": "GVNLegacyPass",
             "parameters": {
+                "enable-gvn-memdep": {
+                    "command": "-enable-gvn-memdep",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
                 "enable-load-pre": {
                     "command": "-enable-load-pre",
                     "initial_value": "true",
@@ -1913,12 +2252,31 @@
                     "initial_value": "true",
                     "type": "bool"
                 },
-                "max-recurse-depth": {
-                    "command": "-max-recurse-depth",
+                "gvn-max-num-deps": {
+                    "command": "-gvn-max-num-deps",
+                    "initial_value": "100",
+                    "type": "uint32_t"
+                },
+                "gvn-max-recurse-depth": {
+                    "command": "-gvn-max-recurse-depth",
                     "initial_value": "1000",
                     "type": "uint32_t"
                 }
             }
+        },
+        "GVNSinkLegacyPass": {
+            "command": "-gvn-sink",
+            "dependencies": {
+                "DominatorTreeWrapperPass": {
+                    "name": "DominatorTreeWrapperPass"
+                },
+                "PostDominatorTreeWrapperPass": {
+                    "name": "PostDominatorTreeWrapperPass"
+                }
+            },
+            "description": "Early GVN sinking of Expressions",
+            "name": "GVNSinkLegacyPass",
+            "parameters": {}
         },
         "GlobalDCELegacyPass": {
             "command": "-globaldce",
@@ -1930,16 +2288,33 @@
         "GlobalOptLegacyPass": {
             "command": "-globalopt",
             "dependencies": {
+                "BlockFrequencyInfoWrapperPass": {
+                    "name": "BlockFrequencyInfoWrapperPass"
+                },
                 "DominatorTreeWrapperPass": {
                     "name": "DominatorTreeWrapperPass"
                 },
                 "TargetLibraryInfoWrapperPass": {
                     "name": "TargetLibraryInfoWrapperPass"
+                },
+                "TargetTransformInfoWrapperPass": {
+                    "name": "TargetTransformInfoWrapperPass"
                 }
             },
             "description": "Global Variable Optimizer",
             "name": "GlobalOptLegacyPass",
-            "parameters": {}
+            "parameters": {
+                "coldcc-rel-freq": {
+                    "command": "-coldcc-rel-freq",
+                    "initial_value": "2",
+                    "type": "int"
+                },
+                "enable-coldcc-stress-test": {
+                    "command": "-enable-coldcc-stress-test",
+                    "initial_value": "false",
+                    "type": "bool"
+                }
+            }
         },
         "GlobalSplit": {
             "command": "-globalsplit",
@@ -1951,6 +2326,9 @@
         "GuardWideningLegacyPass": {
             "command": "-guard-widening",
             "dependencies": {
+                "BranchProbabilityInfoWrapperPass": {
+                    "name": "BranchProbabilityInfoWrapperPass"
+                },
                 "DominatorTreeWrapperPass": {
                     "name": "DominatorTreeWrapperPass"
                 },
@@ -1963,7 +2341,131 @@
             },
             "description": "Widen guards",
             "name": "GuardWideningLegacyPass",
-            "parameters": {}
+            "parameters": {
+                "guard-widening-frequent-branch-threshold": {
+                    "command": "-guard-widening-frequent-branch-threshold",
+                    "initial_value": "1000",
+                    "type": "unsigned"
+                },
+                "guard-widening-widen-branch-guards": {
+                    "command": "-guard-widening-widen-branch-guards",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "guard-widening-widen-frequent-branches": {
+                    "command": "-guard-widening-widen-frequent-branches",
+                    "initial_value": "false",
+                    "type": "bool"
+                }
+            }
+        },
+        "HWAddressSanitizerLegacyPass": {
+            "command": "-hwasan",
+            "dependencies": {},
+            "description": "HWAddressSanitizer: detect memory bugs using tagged addressing.",
+            "name": "HWAddressSanitizerLegacyPass",
+            "parameters": {
+                "hwasan-generate-tags-with-calls": {
+                    "command": "-hwasan-generate-tags-with-calls",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "hwasan-globals": {
+                    "command": "-hwasan-globals",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "hwasan-inline-all-checks": {
+                    "command": "-hwasan-inline-all-checks",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "hwasan-instrument-atomics": {
+                    "command": "-hwasan-instrument-atomics",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "hwasan-instrument-landing-pads": {
+                    "command": "-hwasan-instrument-landing-pads",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "hwasan-instrument-mem-intrinsics": {
+                    "command": "-hwasan-instrument-mem-intrinsics",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "hwasan-instrument-personality-functions": {
+                    "command": "-hwasan-instrument-personality-functions",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "hwasan-instrument-reads": {
+                    "command": "-hwasan-instrument-reads",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "hwasan-instrument-stack": {
+                    "command": "-hwasan-instrument-stack",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "hwasan-instrument-with-calls": {
+                    "command": "-hwasan-instrument-with-calls",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "hwasan-instrument-writes": {
+                    "command": "-hwasan-instrument-writes",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "hwasan-kernel": {
+                    "command": "-hwasan-kernel",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "hwasan-mapping-offset": {
+                    "command": "-hwasan-mapping-offset",
+                    "initial_value": "0",
+                    "type": "uint64_t"
+                },
+                "hwasan-match-all-tag": {
+                    "command": "-hwasan-match-all-tag",
+                    "initial_value": "-1",
+                    "type": "int"
+                },
+                "hwasan-memory-access-callback-prefix": {
+                    "command": "-hwasan-memory-access-callback-prefix",
+                    "initial_value": "\"__hwasan_\"",
+                    "type": "std::string"
+                },
+                "hwasan-record-stack-history": {
+                    "command": "-hwasan-record-stack-history",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "hwasan-recover": {
+                    "command": "-hwasan-recover",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "hwasan-uar-retag-to-zero": {
+                    "command": "-hwasan-uar-retag-to-zero",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "hwasan-with-ifunc": {
+                    "command": "-hwasan-with-ifunc",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "hwasan-with-tls": {
+                    "command": "-hwasan-with-tls",
+                    "initial_value": "true",
+                    "type": "bool"
+                }
+            }
         },
         "Hello": {
             "command": "-hello",
@@ -1972,6 +2474,31 @@
             "name": "Hello",
             "parameters": {}
         },
+        "HotColdSplittingLegacyPass": {
+            "command": "-hotcoldsplit",
+            "dependencies": {
+                "BlockFrequencyInfoWrapperPass": {
+                    "name": "BlockFrequencyInfoWrapperPass"
+                },
+                "ProfileSummaryInfoWrapperPass": {
+                    "name": "ProfileSummaryInfoWrapperPass"
+                }
+            },
+            "description": "Hot Cold Splitting",
+            "name": "HotColdSplittingLegacyPass",
+            "parameters": {
+                "hot-cold-static-analysis": {
+                    "command": "-hot-cold-static-analysis",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "hotcoldsplit-threshold": {
+                    "command": "-hotcoldsplit-threshold",
+                    "initial_value": "2",
+                    "type": "int"
+                }
+            }
+        },
         "IPCP": {
             "command": "-ipconstprop",
             "dependencies": {},
@@ -1979,40 +2506,24 @@
             "name": "IPCP",
             "parameters": {}
         },
-        "IVUsersPrinter": {
-            "command": "-iv-users",
-            "dependencies": {},
-            "description": "",
-            "name": "IVUsersPrinter",
-            "parameters": {}
-        },
-        "IndVarSimplifyLegacyPass": {
-            "command": "-indvars",
+        "IPSCCPLegacyPass": {
+            "command": "-ipsccp",
             "dependencies": {
-                "LoopPass": {
-                    "name": "LoopPass"
+                "AssumptionCacheTracker": {
+                    "name": "AssumptionCacheTracker"
+                },
+                "DominatorTreeWrapperPass": {
+                    "name": "DominatorTreeWrapperPass"
+                },
+                "TargetLibraryInfoWrapperPass": {
+                    "name": "TargetLibraryInfoWrapperPass"
                 }
             },
-            "description": "Induction Variable Simplification",
-            "name": "IndVarSimplifyLegacyPass",
-            "parameters": {
-                "indvars-post-increment-ranges": {
-                    "command": "-indvars-post-increment-ranges",
-                    "initial_value": "true",
-                    "type": "bool"
-                },
-                "replexitval": {
-                    "command": "-replexitval",
-                    "initial_value": "OnlyCheapRepl",
-                    "type": "ReplaceExitVal"
-                },
-                "verify-indvars": {
-                    "command": "-verify-indvars",
-                    "type": "bool"
-                }
-            }
+            "description": "Interprocedural Sparse Conditional Constant Propagation",
+            "name": "IPSCCPLegacyPass",
+            "parameters": {}
         },
-        "InductiveRangeCheckElimination": {
+        "IRCELegacyPass": {
             "command": "-irce",
             "dependencies": {
                 "BranchProbabilityInfoWrapperPass": {
@@ -2023,8 +2534,18 @@
                 }
             },
             "description": "Inductive range check elimination",
-            "name": "InductiveRangeCheckElimination",
+            "name": "IRCELegacyPass",
             "parameters": {
+                "irce-allow-narrow-latch": {
+                    "command": "-irce-allow-narrow-latch",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "irce-allow-unsigned-latch": {
+                    "command": "-irce-allow-unsigned-latch",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
                 "irce-loop-size-cutoff": {
                     "command": "-irce-loop-size-cutoff",
                     "initial_value": "64",
@@ -2048,6 +2569,44 @@
                 "irce-skip-profitability-checks": {
                     "command": "-irce-skip-profitability-checks",
                     "initial_value": "false",
+                    "type": "bool"
+                }
+            }
+        },
+        "IVUsersPrinter": {
+            "command": "-iv-users",
+            "dependencies": {},
+            "description": "",
+            "name": "IVUsersPrinter",
+            "parameters": {}
+        },
+        "IndVarSimplifyLegacyPass": {
+            "command": "-indvars",
+            "dependencies": {
+                "LoopPass": {
+                    "name": "LoopPass"
+                }
+            },
+            "description": "Induction Variable Simplification",
+            "name": "IndVarSimplifyLegacyPass",
+            "parameters": {
+                "disable-lftr": {
+                    "command": "-disable-lftr",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "indvars-post-increment-ranges": {
+                    "command": "-indvars-post-increment-ranges",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "replexitval": {
+                    "command": "-replexitval",
+                    "initial_value": "OnlyCheapRepl",
+                    "type": "ReplaceExitVal"
+                },
+                "verify-indvars": {
+                    "command": "-verify-indvars",
                     "type": "bool"
                 }
             }
@@ -2080,6 +2639,16 @@
                     "command": "-disable-inlined-alloca-merging",
                     "initial_value": "false",
                     "type": "bool"
+                },
+                "inline-remark-attribute": {
+                    "command": "-inline-remark-attribute",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "inliner-function-import-stats": {
+                    "command": "-inliner-function-import-stats",
+                    "initial_value": "InlinerFunctionImportStatsOpts::No",
+                    "type": "InlinerFunctionImportStatsOpts"
                 }
             }
         },
@@ -2103,9 +2672,9 @@
             "description": "",
             "name": "InstCombineCalls",
             "parameters": {
-                "unfold-element-atomic-memcpy-max-elements": {
-                    "command": "-unfold-element-atomic-memcpy-max-elements",
-                    "initial_value": "16",
+                "instcombine-guard-widening-window": {
+                    "command": "-instcombine-guard-widening-window",
+                    "initial_value": "3",
                     "type": "unsigned"
                 }
             }
@@ -2143,7 +2712,13 @@
             "dependencies": {},
             "description": "",
             "name": "InstCombinePHI",
-            "parameters": {}
+            "parameters": {
+                "instcombine-max-num-phis": {
+                    "command": "-instcombine-max-num-phis",
+                    "initial_value": "512",
+                    "type": "unsigned"
+                }
+            }
         },
         "InstCombineSelect": {
             "command": "-instcombine",
@@ -2180,7 +2755,7 @@
             "name": "InstNamer",
             "parameters": {}
         },
-        "InstSimplifier": {
+        "InstSimplifyLegacyPass": {
             "command": "-instsimplify",
             "dependencies": {
                 "AssumptionCacheTracker": {
@@ -2197,8 +2772,21 @@
                 }
             },
             "description": "Remove redundant instructions",
-            "name": "InstSimplifier",
+            "name": "InstSimplifyLegacyPass",
             "parameters": {}
+        },
+        "InstrOrderFileLegacyPass": {
+            "command": "-instrorderfile",
+            "dependencies": {},
+            "description": "Instrumentation for Order File",
+            "name": "InstrOrderFileLegacyPass",
+            "parameters": {
+                "orderfile-write-mapping": {
+                    "command": "-orderfile-write-mapping",
+                    "initial_value": "\"\"",
+                    "type": "std::string"
+                }
+            }
         },
         "InstrProfilingLegacyPass": {
             "command": "-instrprof",
@@ -2226,6 +2814,15 @@
                 "GlobalsAAWrapperPass": {
                     "name": "GlobalsAAWrapperPass"
                 },
+                "LazyBlockFrequencyInfoPass": {
+                    "name": "LazyBlockFrequencyInfoPass"
+                },
+                "OptimizationRemarkEmitterWrapperPass": {
+                    "name": "OptimizationRemarkEmitterWrapperPass"
+                },
+                "ProfileSummaryInfoWrapperPass": {
+                    "name": "ProfileSummaryInfoWrapperPass"
+                },
                 "TargetLibraryInfoWrapperPass": {
                     "name": "TargetLibraryInfoWrapperPass"
                 }
@@ -2236,6 +2833,16 @@
                 "expensive-combines": {
                     "command": "-expensive-combines",
                     "type": "bool"
+                },
+                "instcombine-code-sinking": {
+                    "command": "-instcombine-code-sinking",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "instcombine-lower-dbg-declare": {
+                    "command": "-instcombine-lower-dbg-declare",
+                    "initial_value": "true",
+                    "type": "unsigned"
                 },
                 "instcombine-maxarray-size": {
                     "command": "-instcombine-maxarray-size",
@@ -2269,6 +2876,9 @@
                 "AAResultsWrapperPass": {
                     "name": "AAResultsWrapperPass"
                 },
+                "DominatorTreeWrapperPass": {
+                    "name": "DominatorTreeWrapperPass"
+                },
                 "LazyValueInfoWrapperPass": {
                     "name": "LazyValueInfoWrapperPass"
                 },
@@ -2279,6 +2889,11 @@
             "description": "Jump Threading",
             "name": "JumpThreading",
             "parameters": {
+                "jump-threading-across-loop-headers": {
+                    "command": "-jump-threading-across-loop-headers",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
                 "jump-threading-implication-search-threshold": {
                     "command": "-jump-threading-implication-search-threshold",
                     "initial_value": "3",
@@ -2288,6 +2903,11 @@
                     "command": "-jump-threading-threshold",
                     "initial_value": "6",
                     "type": "unsigned"
+                },
+                "print-lvi-after-jump-threading": {
+                    "command": "-print-lvi-after-jump-threading",
+                    "initial_value": "false",
+                    "type": "bool"
                 }
             }
         },
@@ -2309,7 +2929,7 @@
             "parameters": {
                 "verify-loop-lcssa": {
                     "command": "-verify-loop-lcssa",
-                    "type": "bool,true"
+                    "type": "bool, true"
                 }
             }
         },
@@ -2319,8 +2939,14 @@
                 "LoopPass": {
                     "name": "LoopPass"
                 },
+                "MemorySSAWrapperPass": {
+                    "name": "MemorySSAWrapperPass"
+                },
                 "TargetLibraryInfoWrapperPass": {
                     "name": "TargetLibraryInfoWrapperPass"
+                },
+                "TargetTransformInfoWrapperPass": {
+                    "name": "TargetTransformInfoWrapperPass"
                 }
             },
             "description": "Loop Invariant Code Motion",
@@ -2331,10 +2957,20 @@
                     "initial_value": "false",
                     "type": "bool"
                 },
+                "licm-control-flow-hoisting": {
+                    "command": "-licm-control-flow-hoisting",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
                 "licm-max-num-uses-traversed": {
                     "command": "-licm-max-num-uses-traversed",
                     "initial_value": "8",
                     "type": "uint32_t"
+                },
+                "licm-n2-threshold": {
+                    "command": "-licm-n2-threshold",
+                    "initial_value": "0",
+                    "type": "int"
                 }
             }
         },
@@ -2372,36 +3008,9 @@
             },
             "description": "Conditionally eliminate dead library calls",
             "name": "LibCallsShrinkWrapLegacyPass",
-            "parameters": {
-                "libcalls-shrinkwrap-domain-error": {
-                    "command": "-libcalls-shrinkwrap-domain-error",
-                    "initial_value": "true",
-                    "type": "bool"
-                },
-                "libcalls-shrinkwrap-pole-error": {
-                    "command": "-libcalls-shrinkwrap-pole-error",
-                    "initial_value": "true",
-                    "type": "bool"
-                },
-                "libcalls-shrinkwrap-range-error": {
-                    "command": "-libcalls-shrinkwrap-range-error",
-                    "initial_value": "true",
-                    "type": "bool"
-                }
-            }
-        },
-        "LoadCombine": {
-            "command": "-load-combine",
-            "dependencies": {
-                "AAResultsWrapperPass": {
-                    "name": "AAResultsWrapperPass"
-                }
-            },
-            "description": "LDCOMBINE_NAME",
-            "name": "LoadCombine",
             "parameters": {}
         },
-        "LoadStoreVectorizer": {
+        "LoadStoreVectorizerLegacyPass": {
             "command": "-load-store-vectorizer",
             "dependencies": {
                 "AAResultsWrapperPass": {
@@ -2421,7 +3030,7 @@
                 }
             },
             "description": "Vectorize load and Store instructions",
-            "name": "LoadStoreVectorizer",
+            "name": "LoadStoreVectorizerLegacyPass",
             "parameters": {}
         },
         "Local": {
@@ -2554,10 +3163,42 @@
             },
             "description": "Extract loops into new functions",
             "name": "LoopExtractor",
+            "parameters": {}
+        },
+        "LoopFuseLegacy": {
+            "command": "-loop-fusion",
+            "dependencies": {
+                "DependenceAnalysisWrapperPass": {
+                    "name": "DependenceAnalysisWrapperPass"
+                },
+                "DominatorTreeWrapperPass": {
+                    "name": "DominatorTreeWrapperPass"
+                },
+                "LoopInfoWrapperPass": {
+                    "name": "LoopInfoWrapperPass"
+                },
+                "OptimizationRemarkEmitterWrapperPass": {
+                    "name": "OptimizationRemarkEmitterWrapperPass"
+                },
+                "PostDominatorTreeWrapperPass": {
+                    "name": "PostDominatorTreeWrapperPass"
+                },
+                "ScalarEvolutionWrapperPass": {
+                    "name": "ScalarEvolutionWrapperPass"
+                }
+            },
+            "description": "Loop Fusion",
+            "name": "LoopFuseLegacy",
             "parameters": {
-                "extract-blocks-file": {
-                    "command": "-extract-blocks-file",
-                    "type": "std::string"
+                "loop-fusion-dependence-analysis": {
+                    "command": "-loop-fusion-dependence-analysis",
+                    "initial_value": "FUSION_DEPENDENCE_ANALYSIS_ALL",
+                    "type": "FusionDependenceAnalysisChoice"
+                },
+                "loop-fusion-verbose-debug": {
+                    "command": "-loop-fusion-verbose-debug",
+                    "initial_value": "false",
+                    "type": "bool"
                 }
             }
         },
@@ -2593,6 +3234,9 @@
                 "LoopPass": {
                     "name": "LoopPass"
                 },
+                "MemorySSAWrapperPass": {
+                    "name": "MemorySSAWrapperPass"
+                },
                 "TargetLibraryInfoWrapperPass": {
                     "name": "TargetLibraryInfoWrapperPass"
                 }
@@ -2604,26 +3248,14 @@
         "LoopInterchange": {
             "command": "-loop-interchange",
             "dependencies": {
-                "AAResultsWrapperPass": {
-                    "name": "AAResultsWrapperPass"
-                },
                 "DependenceAnalysisWrapperPass": {
                     "name": "DependenceAnalysisWrapperPass"
                 },
-                "DominatorTreeWrapperPass": {
-                    "name": "DominatorTreeWrapperPass"
+                "LoopPass": {
+                    "name": "LoopPass"
                 },
-                "LCSSAWrapperPass": {
-                    "name": "LCSSAWrapperPass"
-                },
-                "LoopInfoWrapperPass": {
-                    "name": "LoopInfoWrapperPass"
-                },
-                "LoopSimplify": {
-                    "name": "LoopSimplify"
-                },
-                "ScalarEvolutionWrapperPass": {
-                    "name": "ScalarEvolutionWrapperPass"
+                "OptimizationRemarkEmitterWrapperPass": {
+                    "name": "OptimizationRemarkEmitterWrapperPass"
                 }
             },
             "description": "Interchanges loops for cache reuse",
@@ -2642,6 +3274,9 @@
                 "DominatorTreeWrapperPass": {
                     "name": "DominatorTreeWrapperPass"
                 },
+                "LazyBlockFrequencyInfoPass": {
+                    "name": "LazyBlockFrequencyInfoPass"
+                },
                 "LoopAccessLegacyAnalysis": {
                     "name": "LoopAccessLegacyAnalysis"
                 },
@@ -2650,6 +3285,9 @@
                 },
                 "LoopSimplify": {
                     "name": "LoopSimplify"
+                },
+                "ProfileSummaryInfoWrapperPass": {
+                    "name": "ProfileSummaryInfoWrapperPass"
                 },
                 "ScalarEvolutionWrapperPass": {
                     "name": "ScalarEvolutionWrapperPass"
@@ -2673,13 +3311,42 @@
         "LoopPredicationLegacyPass": {
             "command": "-loop-predication",
             "dependencies": {
+                "BranchProbabilityInfoWrapperPass": {
+                    "name": "BranchProbabilityInfoWrapperPass"
+                },
                 "LoopPass": {
                     "name": "LoopPass"
                 }
             },
             "description": "Loop predication",
             "name": "LoopPredicationLegacyPass",
-            "parameters": {}
+            "parameters": {
+                "loop-predication-enable-count-down-loop": {
+                    "command": "-loop-predication-enable-count-down-loop",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "loop-predication-enable-iv-truncation": {
+                    "command": "-loop-predication-enable-iv-truncation",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "loop-predication-latch-probability-scale": {
+                    "command": "-loop-predication-latch-probability-scale",
+                    "initial_value": "2.0",
+                    "type": "float"
+                },
+                "loop-predication-predicate-widenable-branches-to-deopt": {
+                    "command": "-loop-predication-predicate-widenable-branches-to-deopt",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "loop-predication-skip-profitability-checks": {
+                    "command": "-loop-predication-skip-profitability-checks",
+                    "initial_value": "false",
+                    "type": "bool"
+                }
+            }
         },
         "LoopReroll": {
             "command": "-loop-reroll",
@@ -2694,11 +3361,6 @@
             "description": "Reroll loops",
             "name": "LoopReroll",
             "parameters": {
-                "max-reroll-increment": {
-                    "command": "-max-reroll-increment",
-                    "initial_value": "2048",
-                    "type": "unsigned"
-                },
                 "reroll-num-tolerated-failed-matches": {
                     "command": "-reroll-num-tolerated-failed-matches",
                     "initial_value": "400",
@@ -2715,6 +3377,9 @@
                 "LoopPass": {
                     "name": "LoopPass"
                 },
+                "MemorySSAWrapperPass": {
+                    "name": "MemorySSAWrapperPass"
+                },
                 "TargetTransformInfoWrapperPass": {
                     "name": "TargetTransformInfoWrapperPass"
                 }
@@ -2728,6 +3393,13 @@
                     "type": "unsigned"
                 }
             }
+        },
+        "LoopRotationUtils": {
+            "command": "-loop-rotate",
+            "dependencies": {},
+            "description": "",
+            "name": "LoopRotationUtils",
+            "parameters": {}
         },
         "LoopSimplify": {
             "command": "-loop-simplify",
@@ -2751,11 +3423,20 @@
             "dependencies": {
                 "LoopPass": {
                     "name": "LoopPass"
+                },
+                "MemorySSAWrapperPass": {
+                    "name": "MemorySSAWrapperPass"
                 }
             },
             "description": "Simplify loop CFG",
             "name": "LoopSimplifyCFGLegacyPass",
-            "parameters": {}
+            "parameters": {
+                "enable-loop-simplifycfg-term-folding": {
+                    "command": "-enable-loop-simplifycfg-term-folding",
+                    "initial_value": "true",
+                    "type": "bool"
+                }
+            }
         },
         "LoopStrengthReduce": {
             "command": "-loop-reduce",
@@ -2787,15 +3468,35 @@
                     "initial_value": "true",
                     "type": "bool"
                 },
+                "lsr-backedge-indexing": {
+                    "command": "-lsr-backedge-indexing",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "lsr-complexity-limit": {
+                    "command": "-lsr-complexity-limit",
+                    "initial_value": "std::numeric_limits<uint16_t>::max(",
+                    "type": "unsigned"
+                },
                 "lsr-exp-narrow": {
                     "command": "-lsr-exp-narrow",
                     "initial_value": "false",
                     "type": "bool"
                 },
+                "lsr-filter-same-scaled-reg": {
+                    "command": "-lsr-filter-same-scaled-reg",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
                 "lsr-insns-cost": {
                     "command": "-lsr-insns-cost",
-                    "initial_value": "false",
+                    "initial_value": "true",
                     "type": "bool"
+                },
+                "lsr-setupcost-depth-limit": {
+                    "command": "-lsr-setupcost-depth-limit",
+                    "initial_value": "7",
+                    "type": "unsigned"
                 },
                 "stress-ivchain": {
                     "command": "-stress-ivchain",
@@ -2874,6 +3575,14 @@
                     "command": "-unroll-partial-threshold",
                     "type": "unsigned"
                 },
+                "unroll-peel-count": {
+                    "command": "-unroll-peel-count",
+                    "type": "unsigned"
+                },
+                "unroll-remainder": {
+                    "command": "-unroll-remainder",
+                    "type": "bool"
+                },
                 "unroll-revisit-child-loops": {
                     "command": "-unroll-revisit-child-loops",
                     "type": "bool"
@@ -2884,6 +3593,45 @@
                 },
                 "unroll-threshold": {
                     "command": "-unroll-threshold",
+                    "type": "unsigned"
+                }
+            }
+        },
+        "LoopUnrollAndJam": {
+            "command": "-loop-unroll-and-jam",
+            "dependencies": {
+                "AssumptionCacheTracker": {
+                    "name": "AssumptionCacheTracker"
+                },
+                "DependenceAnalysisWrapperPass": {
+                    "name": "DependenceAnalysisWrapperPass"
+                },
+                "LoopPass": {
+                    "name": "LoopPass"
+                },
+                "TargetTransformInfoWrapperPass": {
+                    "name": "TargetTransformInfoWrapperPass"
+                }
+            },
+            "description": "Unroll and Jam loops",
+            "name": "LoopUnrollAndJam",
+            "parameters": {
+                "allow-unroll-and-jam": {
+                    "command": "-allow-unroll-and-jam",
+                    "type": "bool"
+                },
+                "pragma-unroll-and-jam-threshold": {
+                    "command": "-pragma-unroll-and-jam-threshold",
+                    "initial_value": "1024",
+                    "type": "unsigned"
+                },
+                "unroll-and-jam-count": {
+                    "command": "-unroll-and-jam-count",
+                    "type": "unsigned"
+                },
+                "unroll-and-jam-threshold": {
+                    "command": "-unroll-and-jam-threshold",
+                    "initial_value": "60",
                     "type": "unsigned"
                 }
             }
@@ -2903,6 +3651,11 @@
                     "command": "-unroll-peel-max-count",
                     "initial_value": "7",
                     "type": "unsigned"
+                },
+                "unroll-peel-multi-deopt-exit": {
+                    "command": "-unroll-peel-multi-deopt-exit",
+                    "initial_value": "true",
+                    "type": "bool"
                 }
             }
         },
@@ -2911,7 +3664,13 @@
             "dependencies": {},
             "description": "",
             "name": "LoopUnrollRuntime",
-            "parameters": {}
+            "parameters": {
+                "unroll-runtime-multi-exit": {
+                    "command": "-unroll-runtime-multi-exit",
+                    "initial_value": "false",
+                    "type": "bool"
+                }
+            }
         },
         "LoopUnswitch": {
             "command": "-loop-unswitch",
@@ -2919,11 +3678,14 @@
                 "AssumptionCacheTracker": {
                     "name": "AssumptionCacheTracker"
                 },
-                "DivergenceAnalysis": {
-                    "name": "DivergenceAnalysis"
+                "LegacyDivergenceAnalysis": {
+                    "name": "LegacyDivergenceAnalysis"
                 },
                 "LoopPass": {
                     "name": "LoopPass"
+                },
+                "MemorySSAWrapperPass": {
+                    "name": "MemorySSAWrapperPass"
                 },
                 "TargetTransformInfoWrapperPass": {
                     "name": "TargetTransformInfoWrapperPass"
@@ -2979,6 +3741,9 @@
                 "OptimizationRemarkEmitterWrapperPass": {
                     "name": "OptimizationRemarkEmitterWrapperPass"
                 },
+                "ProfileSummaryInfoWrapperPass": {
+                    "name": "ProfileSummaryInfoWrapperPass"
+                },
                 "ScalarEvolutionWrapperPass": {
                     "name": "ScalarEvolutionWrapperPass"
                 },
@@ -2991,11 +3756,6 @@
             "parameters": {
                 "enable-cond-stores-vec": {
                     "command": "-enable-cond-stores-vec",
-                    "initial_value": "true",
-                    "type": "bool"
-                },
-                "enable-if-conversion": {
-                    "command": "-enable-if-conversion",
                     "initial_value": "true",
                     "type": "bool"
                 },
@@ -3012,6 +3772,11 @@
                 "enable-loadstore-runtime-interleave": {
                     "command": "-enable-loadstore-runtime-interleave",
                     "initial_value": "true",
+                    "type": "bool"
+                },
+                "enable-masked-interleaved-mem-accesses": {
+                    "command": "-enable-masked-interleaved-mem-accesses",
+                    "initial_value": "false",
                     "type": "bool"
                 },
                 "force-target-instruction-cost": {
@@ -3041,28 +3806,18 @@
                 },
                 "loop-vectorize-with-block-frequency": {
                     "command": "-loop-vectorize-with-block-frequency",
-                    "initial_value": "false",
+                    "initial_value": "true",
                     "type": "bool"
-                },
-                "max-interleave-group-factor": {
-                    "command": "-max-interleave-group-factor",
-                    "initial_value": "8",
-                    "type": "unsigned"
                 },
                 "max-nested-scalar-reduction-interleave": {
                     "command": "-max-nested-scalar-reduction-interleave",
                     "initial_value": "2",
                     "type": "unsigned"
                 },
-                "pragma-vectorize-memory-check-threshold": {
-                    "command": "-pragma-vectorize-memory-check-threshold",
-                    "initial_value": "128",
-                    "type": "unsigned"
-                },
-                "pragma-vectorize-scev-check-threshold": {
-                    "command": "-pragma-vectorize-scev-check-threshold",
-                    "initial_value": "128",
-                    "type": "unsigned"
+                "prefer-predicate-over-epilog": {
+                    "command": "-prefer-predicate-over-epilog",
+                    "initial_value": "false",
+                    "type": "bool"
                 },
                 "small-loop-cost": {
                     "command": "-small-loop-cost",
@@ -3074,11 +3829,6 @@
                     "initial_value": "1",
                     "type": "unsigned"
                 },
-                "vectorize-scev-check-threshold": {
-                    "command": "-vectorize-scev-check-threshold",
-                    "initial_value": "16",
-                    "type": "unsigned"
-                },
                 "vectorizer-maximize-bandwidth": {
                     "command": "-vectorizer-maximize-bandwidth",
                     "initial_value": "false",
@@ -3088,6 +3838,11 @@
                     "command": "-vectorizer-min-trip-count",
                     "initial_value": "16",
                     "type": "unsigned"
+                },
+                "vplan-build-stress-test": {
+                    "command": "-vplan-build-stress-test",
+                    "initial_value": "false",
+                    "type": "bool"
                 }
             }
         },
@@ -3114,6 +3869,9 @@
                 },
                 "LoopSimplify": {
                     "name": "LoopSimplify"
+                },
+                "OptimizationRemarkEmitterWrapperPass": {
+                    "name": "OptimizationRemarkEmitterWrapperPass"
                 },
                 "ScalarEvolutionWrapperPass": {
                     "name": "ScalarEvolutionWrapperPass"
@@ -3190,13 +3948,7 @@
             "dependencies": {},
             "description": "Lower the guard intrinsic to normal control flow",
             "name": "LowerGuardIntrinsicLegacyPass",
-            "parameters": {
-                "guards-predicate-pass-branch-weight": {
-                    "command": "-guards-predicate-pass-branch-weight",
-                    "initial_value": "1 << 20",
-                    "type": "uint32_t"
-                }
-            }
+            "parameters": {}
         },
         "LowerInvokeLegacyPass": {
             "command": "-lowerinvoke",
@@ -3207,7 +3959,14 @@
         },
         "LowerSwitch": {
             "command": "-lowerswitch",
-            "dependencies": {},
+            "dependencies": {
+                "AssumptionCacheTracker": {
+                    "name": "AssumptionCacheTracker"
+                },
+                "LazyValueInfoWrapperPass": {
+                    "name": "LazyValueInfoWrapperPass"
+                }
+            },
             "description": "Lower SwitchInst's to branches",
             "name": "LowerSwitch",
             "parameters": {}
@@ -3237,6 +3996,20 @@
                 }
             }
         },
+        "LowerWidenableConditionLegacyPass": {
+            "command": "-lower-widenable-condition",
+            "dependencies": {},
+            "description": "Lower the widenable condition to default true value",
+            "name": "LowerWidenableConditionLegacyPass",
+            "parameters": {}
+        },
+        "MakeGuardsExplicitLegacyPass": {
+            "command": "-make-guards-explicit",
+            "dependencies": {},
+            "description": "Lower the guard intrinsic to explicit control flow form",
+            "name": "MakeGuardsExplicitLegacyPass",
+            "parameters": {}
+        },
         "MemCpyOptLegacyPass": {
             "command": "-memcpyopt",
             "dependencies": {
@@ -3263,42 +4036,7 @@
             "name": "MemCpyOptLegacyPass",
             "parameters": {}
         },
-        "MemorySSAUpdater": {
-            "command": "-memoryssa",
-            "dependencies": {},
-            "description": "",
-            "name": "MemorySSAUpdater",
-            "parameters": {}
-        },
-        "MemorySSAWrapperPass": {
-            "command": "-memoryssa",
-            "dependencies": {
-                "AAResultsWrapperPass": {
-                    "name": "AAResultsWrapperPass"
-                },
-                "DominatorTreeWrapperPass": {
-                    "name": "DominatorTreeWrapperPass"
-                },
-                "MemorySSAWrapperPass": {
-                    "name": "MemorySSAWrapperPass"
-                }
-            },
-            "description": "Memory SSA",
-            "name": "MemorySSAWrapperPass",
-            "parameters": {
-                "memssa-check-limit": {
-                    "command": "-memssa-check-limit",
-                    "initial_value": "100",
-                    "type": "unsigned"
-                },
-                "verify-memoryssa": {
-                    "command": "-verify-memoryssa",
-                    "initial_value": "false",
-                    "type": "bool"
-                }
-            }
-        },
-        "MemorySanitizer": {
+        "MemorySanitizerLegacyPass": {
             "command": "-msan",
             "dependencies": {
                 "TargetLibraryInfoWrapperPass": {
@@ -3306,8 +4044,13 @@
                 }
             },
             "description": "MemorySanitizer: detects uninitialized reads.",
-            "name": "MemorySanitizer",
+            "name": "MemorySanitizerLegacyPass",
             "parameters": {
+                "msan-and-mask": {
+                    "command": "-msan-and-mask",
+                    "initial_value": "0",
+                    "type": "uint64_t"
+                },
                 "msan-check-access-address": {
                     "command": "-msan-check-access-address",
                     "initial_value": "true",
@@ -3323,6 +4066,11 @@
                     "initial_value": "false",
                     "type": "bool"
                 },
+                "msan-handle-asm-conservative": {
+                    "command": "-msan-handle-asm-conservative",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
                 "msan-handle-icmp": {
                     "command": "-msan-handle-icmp",
                     "initial_value": "true",
@@ -3331,6 +4079,11 @@
                 "msan-handle-icmp-exact": {
                     "command": "-msan-handle-icmp-exact",
                     "initial_value": "false",
+                    "type": "bool"
+                },
+                "msan-handle-lifetime-intrinsics": {
+                    "command": "-msan-handle-lifetime-intrinsics",
+                    "initial_value": "true",
                     "type": "bool"
                 },
                 "msan-instrumentation-with-call-threshold": {
@@ -3342,6 +4095,16 @@
                     "command": "-msan-keep-going",
                     "initial_value": "false",
                     "type": "bool"
+                },
+                "msan-kernel": {
+                    "command": "-msan-kernel",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "msan-origin-base": {
+                    "command": "-msan-origin-base",
+                    "initial_value": "0",
+                    "type": "uint64_t"
                 },
                 "msan-poison-stack": {
                     "command": "-msan-poison-stack",
@@ -3363,6 +4126,11 @@
                     "initial_value": "true",
                     "type": "bool"
                 },
+                "msan-shadow-base": {
+                    "command": "-msan-shadow-base",
+                    "initial_value": "0",
+                    "type": "uint64_t"
+                },
                 "msan-track-origins": {
                     "command": "-msan-track-origins",
                     "initial_value": "0",
@@ -3372,6 +4140,11 @@
                     "command": "-msan-with-comdat",
                     "initial_value": "false",
                     "type": "bool"
+                },
+                "msan-xor-mask": {
+                    "command": "-msan-xor-mask",
+                    "initial_value": "0",
+                    "type": "uint64_t"
                 }
             }
         },
@@ -3390,17 +4163,36 @@
                     "command": "-mergefunc-sanity",
                     "initial_value": "0",
                     "type": "unsigned"
+                },
+                "mergefunc-use-aliases": {
+                    "command": "-mergefunc-use-aliases",
+                    "initial_value": "false",
+                    "type": "bool"
                 }
             }
+        },
+        "MergeICmpsLegacyPass": {
+            "command": "-mergeicmps",
+            "dependencies": {
+                "AAResultsWrapperPass": {
+                    "name": "AAResultsWrapperPass"
+                },
+                "TargetLibraryInfoWrapperPass": {
+                    "name": "TargetLibraryInfoWrapperPass"
+                },
+                "TargetTransformInfoWrapperPass": {
+                    "name": "TargetTransformInfoWrapperPass"
+                }
+            },
+            "description": "Merge contiguous icmps into a memcmp",
+            "name": "MergeICmpsLegacyPass",
+            "parameters": {}
         },
         "MergedLoadStoreMotionLegacyPass": {
             "command": "-mldst-motion",
             "dependencies": {
                 "AAResultsWrapperPass": {
                     "name": "AAResultsWrapperPass"
-                },
-                "MemoryDependenceWrapperPass": {
-                    "name": "MemoryDependenceWrapperPass"
                 }
             },
             "description": "MergedLoadStoreMotion",
@@ -3417,6 +4209,74 @@
             "description": "Assign new names to everything",
             "name": "MetaRenamer",
             "parameters": {}
+        },
+        "ModuleSanitizerCoverageLegacyPass": {
+            "command": "-module-sancov",
+            "dependencies": {
+                "DominatorTreeWrapperPass": {
+                    "name": "DominatorTreeWrapperPass"
+                },
+                "ModuleSanitizerCoverageLegacyPass": {
+                    "name": "ModuleSanitizerCoverageLegacyPass"
+                },
+                "PostDominatorTreeWrapperPass": {
+                    "name": "PostDominatorTreeWrapperPass"
+                }
+            },
+            "description": "Pass for inserting sancov top-level initialization calls",
+            "name": "ModuleSanitizerCoverageLegacyPass",
+            "parameters": {
+                "sanitizer-coverage-inline-8bit-counters": {
+                    "command": "-sanitizer-coverage-inline-8bit-counters",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "sanitizer-coverage-level": {
+                    "command": "-sanitizer-coverage-level",
+                    "initial_value": "0",
+                    "type": "int"
+                },
+                "sanitizer-coverage-pc-table": {
+                    "command": "-sanitizer-coverage-pc-table",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "sanitizer-coverage-prune-blocks": {
+                    "command": "-sanitizer-coverage-prune-blocks",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "sanitizer-coverage-stack-depth": {
+                    "command": "-sanitizer-coverage-stack-depth",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "sanitizer-coverage-trace-compares": {
+                    "command": "-sanitizer-coverage-trace-compares",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "sanitizer-coverage-trace-divs": {
+                    "command": "-sanitizer-coverage-trace-divs",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "sanitizer-coverage-trace-geps": {
+                    "command": "-sanitizer-coverage-trace-geps",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "sanitizer-coverage-trace-pc": {
+                    "command": "-sanitizer-coverage-trace-pc",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "sanitizer-coverage-trace-pc-guard": {
+                    "command": "-sanitizer-coverage-trace-pc-guard",
+                    "initial_value": "false",
+                    "type": "bool"
+                }
+            }
         },
         "NameAnonGlobalLegacyPass": {
             "command": "-name-anon-globals",
@@ -3473,6 +4333,11 @@
             "description": "Global Value Numbering",
             "name": "NewGVNLegacyPass",
             "parameters": {
+                "enable-phi-of-ops": {
+                    "command": "-enable-phi-of-ops",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
                 "enable-store-refinement": {
                     "command": "-enable-store-refinement",
                     "initial_value": "false",
@@ -3499,7 +4364,13 @@
             },
             "description": "ObjC ARC contraction",
             "name": "ObjCARCContract",
-            "parameters": {}
+            "parameters": {
+                "arc-contract-max-bb-size": {
+                    "command": "-arc-contract-max-bb-size",
+                    "initial_value": "65535",
+                    "type": "unsigned"
+                }
+            }
         },
         "ObjCARCExpand": {
             "command": "-objc-arc-expand",
@@ -3517,7 +4388,13 @@
             },
             "description": "ObjC ARC optimization",
             "name": "ObjCARCOpt",
-            "parameters": {}
+            "parameters": {
+                "arc-opt-max-ptr-states": {
+                    "command": "-arc-opt-max-ptr-states",
+                    "initial_value": "4095",
+                    "type": "unsigned"
+                }
+            }
         },
         "PAEval": {
             "command": "-pa-eval",
@@ -3533,20 +4410,15 @@
         "PGOIndirectCallPromotionLegacyPass": {
             "command": "-pgo-icall-prom",
             "dependencies": {
-                "BlockFrequencyInfoWrapperPass": {
-                    "name": "BlockFrequencyInfoWrapperPass"
+                "ProfileSummaryInfoWrapperPass": {
+                    "name": "ProfileSummaryInfoWrapperPass"
                 }
             },
-            "description": "Use PGO instrumentation profile to promote indirect calls to \"\n                \"direct calls.",
+            "description": "Use PGO instrumentation profile to promote indirect \"\n                      \"calls to direct calls.",
             "name": "PGOIndirectCallPromotionLegacyPass",
             "parameters": {
                 "disable-icp": {
                     "command": "-disable-icp",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "disable-memop-opt": {
-                    "command": "-disable-memop-opt",
                     "initial_value": "false",
                     "type": "bool"
                 },
@@ -3584,26 +4456,6 @@
                     "command": "-icp-samplepgo",
                     "initial_value": "false",
                     "type": "bool"
-                },
-                "pgo-memop-count-threshold": {
-                    "command": "-pgo-memop-count-threshold",
-                    "initial_value": "1000",
-                    "type": "unsigned"
-                },
-                "pgo-memop-max-version": {
-                    "command": "-pgo-memop-max-version",
-                    "initial_value": "3",
-                    "type": "unsigned"
-                },
-                "pgo-memop-percent-threshold": {
-                    "command": "-pgo-memop-percent-threshold",
-                    "initial_value": "40",
-                    "type": "unsigned"
-                },
-                "pgo-memop-scale-count": {
-                    "command": "-pgo-memop-scale-count",
-                    "initial_value": "true",
-                    "type": "bool"
                 }
             }
         },
@@ -3615,6 +4467,9 @@
                 },
                 "BranchProbabilityInfoWrapperPass": {
                     "name": "BranchProbabilityInfoWrapperPass"
+                },
+                "ProfileSummaryInfoWrapperPass": {
+                    "name": "ProfileSummaryInfoWrapperPass"
                 }
             },
             "description": "PGO instrumentation.",
@@ -3650,6 +4505,11 @@
                     "initial_value": "true",
                     "type": "bool"
                 },
+                "pgo-emit-branch-prob": {
+                    "command": "-pgo-emit-branch-prob",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
                 "pgo-instr-memop": {
                     "command": "-pgo-instr-memop",
                     "initial_value": "true",
@@ -3665,14 +4525,55 @@
                     "initial_value": "\"\"",
                     "type": "std::string"
                 },
+                "pgo-test-profile-remapping-file": {
+                    "command": "-pgo-test-profile-remapping-file",
+                    "initial_value": "\"\"",
+                    "type": "std::string"
+                },
                 "pgo-view-raw-counts": {
                     "command": "-pgo-view-raw-counts",
-                    "initial_value": "false",
-                    "type": "bool"
+                    "type": "PGOViewCountsType"
                 },
                 "pgo-warn-missing-function": {
                     "command": "-pgo-warn-missing-function",
                     "initial_value": "false",
+                    "type": "bool"
+                }
+            }
+        },
+        "PGOMemOPSizeOptLegacyPass": {
+            "command": "-pgo-memop-opt",
+            "dependencies": {
+                "BlockFrequencyInfoWrapperPass": {
+                    "name": "BlockFrequencyInfoWrapperPass"
+                }
+            },
+            "description": "Optimize memory intrinsic using its size value profile",
+            "name": "PGOMemOPSizeOptLegacyPass",
+            "parameters": {
+                "disable-memop-opt": {
+                    "command": "-disable-memop-opt",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "pgo-memop-count-threshold": {
+                    "command": "-pgo-memop-count-threshold",
+                    "initial_value": "1000",
+                    "type": "unsigned"
+                },
+                "pgo-memop-max-version": {
+                    "command": "-pgo-memop-max-version",
+                    "initial_value": "3",
+                    "type": "unsigned"
+                },
+                "pgo-memop-percent-threshold": {
+                    "command": "-pgo-memop-percent-threshold",
+                    "initial_value": "40",
+                    "type": "unsigned"
+                },
+                "pgo-memop-scale-count": {
+                    "command": "-pgo-memop-scale-count",
+                    "initial_value": "true",
                     "type": "bool"
                 }
             }
@@ -3682,11 +4583,83 @@
             "dependencies": {
                 "AssumptionCacheTracker": {
                     "name": "AssumptionCacheTracker"
+                },
+                "ProfileSummaryInfoWrapperPass": {
+                    "name": "ProfileSummaryInfoWrapperPass"
+                },
+                "TargetTransformInfoWrapperPass": {
+                    "name": "TargetTransformInfoWrapperPass"
                 }
             },
             "description": "Partial Inliner",
             "name": "PartialInlinerLegacyPass",
-            "parameters": {}
+            "parameters": {
+                "cold-branch-ratio": {
+                    "command": "-cold-branch-ratio",
+                    "initial_value": "0.1",
+                    "type": "float"
+                },
+                "disable-mr-partial-inlining": {
+                    "command": "-disable-mr-partial-inlining",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "disable-partial-inlining": {
+                    "command": "-disable-partial-inlining",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "max-num-inline-blocks": {
+                    "command": "-max-num-inline-blocks",
+                    "initial_value": "5",
+                    "type": "unsigned"
+                },
+                "max-partial-inlining": {
+                    "command": "-max-partial-inlining",
+                    "initial_value": "-1",
+                    "type": "int"
+                },
+                "min-block-execution": {
+                    "command": "-min-block-execution",
+                    "initial_value": "100",
+                    "type": "unsigned"
+                },
+                "min-region-size-ratio": {
+                    "command": "-min-region-size-ratio",
+                    "initial_value": "0.1",
+                    "type": "float"
+                },
+                "outline-region-freq-percent": {
+                    "command": "-outline-region-freq-percent",
+                    "initial_value": "75",
+                    "type": "int"
+                },
+                "partial-inlining-extra-penalty": {
+                    "command": "-partial-inlining-extra-penalty",
+                    "initial_value": "0",
+                    "type": "unsigned"
+                },
+                "pi-force-live-exit-outline": {
+                    "command": "-pi-force-live-exit-outline",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "pi-mark-coldcc": {
+                    "command": "-pi-mark-coldcc",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "skip-partial-inlining-cost-analysis": {
+                    "command": "-skip-partial-inlining-cost-analysis",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "trace-partial-inlining": {
+                    "command": "-trace-partial-inlining",
+                    "initial_value": "false",
+                    "type": "bool"
+                }
+            }
         },
         "PartiallyInlineLibCallsLegacyPass": {
             "command": "-partially-inline-libcalls",
@@ -3750,6 +4723,19 @@
                 }
             }
         },
+        "PoisonChecking": {
+            "command": "-poison-checking",
+            "dependencies": {},
+            "description": "",
+            "name": "PoisonChecking",
+            "parameters": {
+                "poison-checking-function-local": {
+                    "command": "-poison-checking-function-local",
+                    "initial_value": "false",
+                    "type": "bool"
+                }
+            }
+        },
         "PostOrderFunctionAttrsLegacyPass": {
             "command": "-functionattrs",
             "dependencies": {
@@ -3763,6 +4749,14 @@
             "description": "Deduce function attributes",
             "name": "PostOrderFunctionAttrsLegacyPass",
             "parameters": {
+                "disable-nofree-inference": {
+                    "command": "-disable-nofree-inference",
+                    "type": "bool"
+                },
+                "disable-nounwind-inference": {
+                    "command": "-disable-nounwind-inference",
+                    "type": "bool"
+                },
                 "enable-nonnull-arg-prop": {
                     "command": "-enable-nonnull-arg-prop",
                     "type": "bool"
@@ -3846,7 +4840,7 @@
             "name": "RegToMem",
             "parameters": {}
         },
-        "RewriteStatepointsForGC": {
+        "RewriteStatepointsForGCLegacyPass": {
             "command": "-rewrite-statepoints-for-gc",
             "dependencies": {
                 "DominatorTreeWrapperPass": {
@@ -3857,7 +4851,7 @@
                 }
             },
             "description": "Make relocations explicit at statepoints",
-            "name": "RewriteStatepointsForGC",
+            "name": "RewriteStatepointsForGCLegacyPass",
             "parameters": {
                 "rs4gc-allow-statepoint-with-no-deopt-info": {
                     "command": "-rs4gc-allow-statepoint-with-no-deopt-info",
@@ -3922,6 +4916,9 @@
                 },
                 "LoopSimplify": {
                     "name": "LoopSimplify"
+                },
+                "OptimizationRemarkEmitterWrapperPass": {
+                    "name": "OptimizationRemarkEmitterWrapperPass"
                 },
                 "ScalarEvolutionWrapperPass": {
                     "name": "ScalarEvolutionWrapperPass"
@@ -4011,16 +5008,39 @@
             "name": "SSAUpdater",
             "parameters": {}
         },
+        "SSAUpdaterBulk": {
+            "command": "-ssaupdaterbulk",
+            "dependencies": {},
+            "description": "",
+            "name": "SSAUpdaterBulk",
+            "parameters": {}
+        },
         "SampleProfileLoaderLegacyPass": {
             "command": "-sample-profile",
             "dependencies": {
                 "AssumptionCacheTracker": {
                     "name": "AssumptionCacheTracker"
+                },
+                "ProfileSummaryInfoWrapperPass": {
+                    "name": "ProfileSummaryInfoWrapperPass"
+                },
+                "TargetTransformInfoWrapperPass": {
+                    "name": "TargetTransformInfoWrapperPass"
                 }
             },
             "description": "Sample Profile loader",
             "name": "SampleProfileLoaderLegacyPass",
             "parameters": {
+                "no-warn-sample-unused": {
+                    "command": "-no-warn-sample-unused",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "profile-sample-accurate": {
+                    "command": "-profile-sample-accurate",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
                 "sample-profile-check-record-coverage": {
                     "command": "-sample-profile-check-record-coverage",
                     "initial_value": "0",
@@ -4036,89 +5056,30 @@
                     "initial_value": "\"\"",
                     "type": "std::string"
                 },
-                "sample-profile-inline-hot-threshold": {
-                    "command": "-sample-profile-inline-hot-threshold",
-                    "initial_value": "0.1",
-                    "type": "double"
-                },
                 "sample-profile-max-propagate-iterations": {
                     "command": "-sample-profile-max-propagate-iterations",
                     "initial_value": "100",
                     "type": "unsigned"
+                },
+                "sample-profile-remapping-file": {
+                    "command": "-sample-profile-remapping-file",
+                    "initial_value": "\"\"",
+                    "type": "std::string"
                 }
             }
         },
-        "SanitizerCoverageModule": {
-            "command": "-sancov",
-            "dependencies": {
-                "DominatorTreeWrapperPass": {
-                    "name": "DominatorTreeWrapperPass"
-                },
-                "PostDominatorTreeWrapperPass": {
-                    "name": "PostDominatorTreeWrapperPass"
-                }
-            },
-            "description": "SanitizerCoverage: TODO.\"\n                      \"ModulePass",
-            "name": "SanitizerCoverageModule",
-            "parameters": {
-                "sanitizer-coverage-8bit-counters": {
-                    "command": "-sanitizer-coverage-8bit-counters",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "sanitizer-coverage-block-threshold": {
-                    "command": "-sanitizer-coverage-block-threshold",
-                    "initial_value": "0",
-                    "type": "unsigned"
-                },
-                "sanitizer-coverage-experimental-tracing": {
-                    "command": "-sanitizer-coverage-experimental-tracing",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "sanitizer-coverage-level": {
-                    "command": "-sanitizer-coverage-level",
-                    "initial_value": "0",
-                    "type": "int"
-                },
-                "sanitizer-coverage-prune-blocks": {
-                    "command": "-sanitizer-coverage-prune-blocks",
-                    "initial_value": "true",
-                    "type": "bool"
-                },
-                "sanitizer-coverage-trace-compares": {
-                    "command": "-sanitizer-coverage-trace-compares",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "sanitizer-coverage-trace-divs": {
-                    "command": "-sanitizer-coverage-trace-divs",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "sanitizer-coverage-trace-geps": {
-                    "command": "-sanitizer-coverage-trace-geps",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "sanitizer-coverage-trace-pc": {
-                    "command": "-sanitizer-coverage-trace-pc",
-                    "initial_value": "false",
-                    "type": "bool"
-                },
-                "sanitizer-coverage-trace-pc-guard": {
-                    "command": "-sanitizer-coverage-trace-pc-guard",
-                    "initial_value": "false",
-                    "type": "bool"
-                }
-            }
-        },
-        "Scalarizer": {
+        "ScalarizerLegacyPass": {
             "command": "-scalarizer",
             "dependencies": {},
-            "description": "",
-            "name": "Scalarizer",
-            "parameters": {}
+            "description": "Scalarize vector operations",
+            "name": "ScalarizerLegacyPass",
+            "parameters": {
+                "scalarize-load-store": {
+                    "command": "-scalarize-load-store",
+                    "initial_value": "false",
+                    "type": "bool"
+                }
+            }
         },
         "SeparateConstOffsetFromGEP": {
             "command": "-separate-const-offset-from-gep",
@@ -4176,6 +5137,63 @@
             "description": "Function Integration/Inlining",
             "name": "SimpleInliner",
             "parameters": {}
+        },
+        "SimpleLoopUnswitchLegacyPass": {
+            "command": "-simple-loop-unswitch",
+            "dependencies": {
+                "AssumptionCacheTracker": {
+                    "name": "AssumptionCacheTracker"
+                },
+                "DominatorTreeWrapperPass": {
+                    "name": "DominatorTreeWrapperPass"
+                },
+                "LoopInfoWrapperPass": {
+                    "name": "LoopInfoWrapperPass"
+                },
+                "LoopPass": {
+                    "name": "LoopPass"
+                },
+                "MemorySSAWrapperPass": {
+                    "name": "MemorySSAWrapperPass"
+                },
+                "TargetTransformInfoWrapperPass": {
+                    "name": "TargetTransformInfoWrapperPass"
+                }
+            },
+            "description": "Simple unswitch loops",
+            "name": "SimpleLoopUnswitchLegacyPass",
+            "parameters": {
+                "enable-nontrivial-unswitch": {
+                    "command": "-enable-nontrivial-unswitch",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
+                "enable-unswitch-cost-multiplier": {
+                    "command": "-enable-unswitch-cost-multiplier",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "simple-loop-unswitch-guards": {
+                    "command": "-simple-loop-unswitch-guards",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "unswitch-num-initial-unscaled-candidates": {
+                    "command": "-unswitch-num-initial-unscaled-candidates",
+                    "initial_value": "8",
+                    "type": "int"
+                },
+                "unswitch-siblings-toplevel-div": {
+                    "command": "-unswitch-siblings-toplevel-div",
+                    "initial_value": "2",
+                    "type": "int"
+                },
+                "unswitch-threshold": {
+                    "command": "-unswitch-threshold",
+                    "initial_value": "50",
+                    "type": "int"
+                }
+            }
         },
         "SimplifyCFG": {
             "command": "-simplifycfg",
@@ -4247,6 +5265,13 @@
             },
             "description": "Code sinking",
             "name": "SinkingLegacyPass",
+            "parameters": {}
+        },
+        "SpeculateAroundPHIs": {
+            "command": "-spec-phis",
+            "dependencies": {},
+            "description": "",
+            "name": "SpeculateAroundPHIs",
             "parameters": {}
         },
         "SpeculativeExecutionLegacyPass": {
@@ -4331,11 +5356,11 @@
         "StructurizeCFG": {
             "command": "-structurizecfg",
             "dependencies": {
-                "DivergenceAnalysis": {
-                    "name": "DivergenceAnalysis"
-                },
                 "DominatorTreeWrapperPass": {
                     "name": "DominatorTreeWrapperPass"
+                },
+                "LegacyDivergenceAnalysis": {
+                    "name": "LegacyDivergenceAnalysis"
                 },
                 "LowerSwitch": {
                     "name": "LowerSwitch"
@@ -4346,11 +5371,43 @@
             },
             "description": "Structurize the CFG",
             "name": "StructurizeCFG",
-            "parameters": {}
+            "parameters": {
+                "structurizecfg-relaxed-uniform-regions": {
+                    "command": "-structurizecfg-relaxed-uniform-regions",
+                    "initial_value": "true",
+                    "type": "bool"
+                },
+                "structurizecfg-skip-uniform-regions": {
+                    "command": "-structurizecfg-skip-uniform-regions",
+                    "initial_value": "false",
+                    "type": "bool"
+                }
+            }
+        },
+        "SyntheticCountsPropagation": {
+            "command": "-synthetic-counts-propagation",
+            "dependencies": {},
+            "description": "",
+            "name": "SyntheticCountsPropagation",
+            "parameters": {
+                "cold-synthetic-count": {
+                    "command": "-cold-synthetic-count",
+                    "initial_value": "5",
+                    "type": "int"
+                },
+                "inline-synthetic-count": {
+                    "command": "-inline-synthetic-count",
+                    "initial_value": "15",
+                    "type": "int"
+                }
+            }
         },
         "TailCallElim": {
             "command": "-tailcallelim",
             "dependencies": {
+                "OptimizationRemarkEmitterWrapperPass": {
+                    "name": "OptimizationRemarkEmitterWrapperPass"
+                },
                 "TargetTransformInfoWrapperPass": {
                     "name": "TargetTransformInfoWrapperPass"
                 }
@@ -4359,7 +5416,7 @@
             "name": "TailCallElim",
             "parameters": {}
         },
-        "ThreadSanitizer": {
+        "ThreadSanitizerLegacyPass": {
             "command": "-tsan",
             "dependencies": {
                 "TargetLibraryInfoWrapperPass": {
@@ -4367,7 +5424,7 @@
                 }
             },
             "description": "ThreadSanitizer: detects data races.",
-            "name": "ThreadSanitizer",
+            "name": "ThreadSanitizerLegacyPass",
             "parameters": {
                 "tsan-handle-cxx-exceptions": {
                     "command": "-tsan-handle-cxx-exceptions",
@@ -4396,6 +5453,13 @@
                 }
             }
         },
+        "TruncInstCombine": {
+            "command": "-aggressive-instcombine",
+            "dependencies": {},
+            "description": "",
+            "name": "TruncInstCombine",
+            "parameters": {}
+        },
         "UnifyFunctionExitNodes": {
             "command": "-mergereturn",
             "dependencies": {},
@@ -4410,11 +5474,69 @@
             "name": "VNCoercion",
             "parameters": {}
         },
+        "VPlan": {
+            "command": "-vplan",
+            "dependencies": {},
+            "description": "",
+            "name": "VPlan",
+            "parameters": {}
+        },
+        "VPlanHCFGBuilder": {
+            "command": "-loop-vectorize",
+            "dependencies": {},
+            "description": "",
+            "name": "VPlanHCFGBuilder",
+            "parameters": {}
+        },
+        "VPlanPredicator": {
+            "command": "-VPlanPredicator",
+            "dependencies": {},
+            "description": "",
+            "name": "VPlanPredicator",
+            "parameters": {}
+        },
+        "VPlanSLP": {
+            "command": "-vplan-slp",
+            "dependencies": {},
+            "description": "",
+            "name": "VPlanSLP",
+            "parameters": {}
+        },
+        "VPlanVerifier": {
+            "command": "-loop-vectorize",
+            "dependencies": {},
+            "description": "",
+            "name": "VPlanVerifier",
+            "parameters": {
+                "vplan-verify-hcfg": {
+                    "command": "-vplan-verify-hcfg",
+                    "initial_value": "false",
+                    "type": "bool"
+                }
+            }
+        },
+        "WarnMissedTransformationsLegacy": {
+            "command": "-transform-warning",
+            "dependencies": {
+                "LoopInfoWrapperPass": {
+                    "name": "LoopInfoWrapperPass"
+                },
+                "OptimizationRemarkEmitterWrapperPass": {
+                    "name": "OptimizationRemarkEmitterWrapperPass"
+                }
+            },
+            "description": "Warn about non-applied transformations",
+            "name": "WarnMissedTransformationsLegacy",
+            "parameters": {}
+        },
         "WholeProgramDevirt": {
             "command": "-wholeprogramdevirt",
             "dependencies": {
                 "AssumptionCacheTracker": {
                     "name": "AssumptionCacheTracker"
+                },
+                "DominatorTreeWrapperPass": {
+                    "name": "DominatorTreeWrapperPass"
                 },
                 "TargetLibraryInfoWrapperPass": {
                     "name": "TargetLibraryInfoWrapperPass"
@@ -4423,6 +5545,16 @@
             "description": "Whole program devirtualization",
             "name": "WholeProgramDevirt",
             "parameters": {
+                "wholeprogramdevirt-branch-funnel-threshold": {
+                    "command": "-wholeprogramdevirt-branch-funnel-threshold",
+                    "initial_value": "10",
+                    "type": "unsigned"
+                },
+                "wholeprogramdevirt-print-index-based": {
+                    "command": "-wholeprogramdevirt-print-index-based",
+                    "initial_value": "false",
+                    "type": "bool"
+                },
                 "wholeprogramdevirt-read-summary": {
                     "command": "-wholeprogramdevirt-read-summary",
                     "type": "std::string"
